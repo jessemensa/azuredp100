@@ -1,0 +1,1908 @@
+EXPLORING AND CONFIGURE AZURE MACHINE LEARNING WORKSPACE 
+
+- Creating azure ml workspace 
+
+Get access to Azure, for example through the Azure portal.
+Sign in to get access to an Azure subscription.
+Create a resource group within your subscription.
+Create an Azure Machine Learning service to create a workspace.
+
+
+Plain English 
+
+
+When a workspace is provisioned, Azure automatically creates other Azure resources within the same resource group to support the workspace:
+
+Azure Storage Account: To store files and notebooks used in the workspace, and to store metadata of jobs and models.
+Azure Key Vault: To securely manage secrets such as authentication keys and credentials used by the workspace.
+Application Insights: To monitor predictive services in the workspace.
+Azure Container Registry: Created when needed to store images for Azure Machine Learning environments.
+
+
+PLAIN ENGLISH 
+jessemensa: hello 
+
+GitHub Copilot: Hello! How can I assist you with your Azure Machine Learning content or code?
+
+jessemensa: EXPLORING AND CONFIGURE AZURE MACHINE LEARNING WORKSPACE 
+
+- Creating azure ml workspace 
+
+Get access to Azure, for example through the Azure portal.
+Sign in to get access to an Azure subscription.
+Create a resource group within your subscription.
+Create an Azure Machine Learning service to create a workspace.
+
+
+lets go through what azure ml workspace is and getting access 
+
+Workspace: Collecting workspace informationAn **Azure Machine Learning workspace** is a foundational resource in Azure Machine Learning that provides a centralized environment for managing all the resources and assets required for machine learning workflows. It acts as a hub where you can train, deploy, and manage machine learning models.
+
+### What is an Azure ML Workspace?
+- **Centralized Resource**: It organizes and manages resources like compute targets, datastores, datasets, models, and environments.
+- **Collaboration**: Enables teams to collaborate on machine learning projects.
+- **Integration**: Integrates with other Azure services like Azure Storage, Key Vault, and Application Insights.
+- **Tracking**: Tracks experiments, metrics, and model versions.
+
+When a workspace is created, Azure automatically provisions supporting resources:
+- **Azure Storage Account**: Stores files, notebooks, and metadata.
+- **Azure Key Vault**: Manages secrets like authentication keys.
+- **Application Insights**: Monitors deployed services.
+- **Azure Container Registry**: Stores Docker images for environments.
+
+---
+
+### Getting Access to Azure ML Workspace
+1. **Azure Portal**:
+   - Sign in to the [Azure Portal](https://portal.azure.com).
+   - Ensure you have access to an Azure subscription.
+   - Create a **Resource Group** to organize related resources.
+
+2. **Create the Workspace**:
+   - Navigate to "Create a resource" and search for "Machine Learning".
+   - Follow the steps to create an Azure Machine Learning workspace.
+
+3. **Programmatic Access**:
+   - Use the **Azure CLI** or **Python SDK** to create and manage the workspace.
+   - Example using Python SDK:
+     ```python
+     from azure.ai.ml.entities import Workspace
+     from azure.ai.ml import MLClient
+     from azure.identity import DefaultAzureCredential
+
+     ml_client = MLClient(
+         DefaultAzureCredential(), 
+         subscription_id="your-subscription-id", 
+         resource_group="your-resource-group"
+     )
+
+     workspace = Workspace(
+         name="your-workspace-name",
+         location="eastus",
+         description="Example workspace"
+     )
+
+     ml_client.workspaces.begin_create(workspace)
+     ```
+
+4. **Role-Based Access Control (RBAC)**:
+   - Assign roles like **Owner**, **Contributor**, or **Reader** to users for workspace access.
+   - Use Azure Portal or CLI to configure access.
+
+Let me know if you'd like to explore any specific aspect further!
+
+jessemensa: EXPLORING AND CONFIGURE AZURE MACHINE LEARNING WORKSPACE 
+
+- Creating azure ml workspace 
+
+Get access to Azure, for example through the Azure portal.
+Sign in to get access to an Azure subscription.
+Create a resource group within your subscription.
+Create an Azure Machine Learning service to create a workspace.
+
+
+
+When a workspace is provisioned, Azure automatically creates other Azure resources within the same resource group to support the workspace:
+
+Azure Storage Account: To store files and notebooks used in the workspace, and to store metadata of jobs and models.
+Azure Key Vault: To securely manage secrets such as authentication keys and credentials used by the workspace.
+Application Insights: To monitor predictive services in the workspace.
+Azure Container Registry: Created when needed to store images for Azure Machine Learning environments.
+
+
+EXPLORING AND CONFIGURE AZURE MACHINE LEARNING WORKSPACE 
+
+- Creating azure ml workspace 
+
+Get access to Azure, for example through the Azure portal.
+Sign in to get access to an Azure subscription.
+Create a resource group within your subscription.
+Create an Azure Machine Learning service to create a workspace.
+
+
+lets go through what azure ml workspace is and getting access 
+
+explain all in plain english 
+
+
+An **Azure Machine Learning workspace** is like a central hub where all the tools, resources, and data needed for machine learning projects are organized and managed. Think of it as a virtual office for data scientists and machine learning engineers to collaborate, experiment, and deploy machine learning models.
+
+When you create a workspace, Azure automatically sets up additional resources to support it:
+1. **Azure Storage Account**: Stores files, datasets, and metadata for experiments and models.
+2. **Azure Key Vault**: Safely stores sensitive information like passwords, keys, and credentials.
+3. **Application Insights**: Tracks and monitors the performance of deployed machine learning models.
+4. **Azure Container Registry**: Stores Docker images used for running machine learning environments.
+
+---
+
+### How to Get Access to an Azure ML Workspace
+
+1. **Sign in to Azure**:
+   - Go to the [Azure Portal](https://portal.azure.com).
+   - Log in with your Azure account credentials.
+
+2. **Access an Azure Subscription**:
+   - Ensure you have access to an Azure subscription. This is like a billing account that allows you to use Azure services.
+
+3. **Create a Resource Group**:
+   - A resource group is like a folder where all related Azure resources (like the workspace, storage, and compute) are stored together. You can create one in the Azure Portal.
+
+4. **Create the Azure Machine Learning Workspace**:
+   - In the Azure Portal, search for "Machine Learning" and select "Create."
+   - Fill in the required details, such as the workspace name, resource group, and region.
+   - Once created, the workspace will automatically set up the supporting resources (storage, key vault, etc.).
+
+---
+
+### Why Use an Azure ML Workspace?
+
+- **Centralized Management**: Everything you need for machine learning (data, models, compute, etc.) is in one place.
+- **Collaboration**: Teams can work together on the same workspace.
+- **Automation**: You can automate tasks like training and deploying models.
+- **Integration**: It connects seamlessly with other Azure services like storage, databases, and monitoring tools.
+
+Let me know if you'd like to dive deeper into any specific part!
+
+
+CREATE WORKSPACE 
+
+You can create an Azure Machine Learning workspace in any of the following ways:
+
+Use the user interface in the Azure portal to create an Azure Machine Learning service.
+Create an Azure Resource Manager (ARM) template. Learn how to use an ARM template to create a workspace.
+Use the Azure Command Line Interface (CLI) with the Azure Machine Learning CLI extension. Learn how to create the workspace with the CLI v2.
+Use the Azure Machine Learning Python SDK.
+
+Example code 
+from azure.ai.ml.entities import Workspace
+
+workspace_name = "mlw-example"
+
+ws_basic = Workspace(
+    name=workspace_name,
+    location="eastus",
+    display_name="Basic workspace-example",
+    description="This example shows how to create a basic workspace",
+)
+ml_client.workspaces.begin_create(ws_basic)
+
+
+PLAIN ENGLISH 
+
+### Creating an Azure Machine Learning Workspace in Plain English
+
+An **Azure Machine Learning workspace** is like a central hub where you manage all the resources needed for machine learning projects. You can create a workspace in several ways, depending on your preference or technical expertise. Here's how you can do it:
+
+---
+
+### 1. **Using the Azure Portal**
+This is the easiest way to create a workspace if you prefer a graphical interface:
+1. Log in to the [Azure Portal](https://portal.azure.com).
+2. Search for "Machine Learning" in the search bar and select "Create."
+3. Fill in the required details like:
+   - **Workspace Name**: A unique name for your workspace.
+   - **Resource Group**: A folder-like structure to organize related resources.
+   - **Region**: The Azure region where the workspace will be hosted.
+4. Click "Review + Create" to finalize the setup.
+
+---
+
+### 2. **Using an Azure Resource Manager (ARM) Template**
+An ARM template is a JSON file that defines the resources you want to create. This method is useful for automating workspace creation:
+1. Write an ARM template that specifies the workspace configuration.
+2. Deploy the template using the Azure Portal, Azure CLI, or PowerShell.
+
+---
+
+### 3. **Using the Azure Command Line Interface (CLI)**
+The Azure CLI is a command-line tool for managing Azure resources. Here's how to create a workspace using the CLI:
+1. Install the Azure CLI and the Azure Machine Learning extension:
+   ```bash
+   az extension add -n ml -y
+   ```
+2. Run the following command to create a workspace:
+   ```bash
+   az ml workspace create --name my-workspace --resource-group my-resource-group --location eastus
+   ```
+   Replace `my-workspace`, `my-resource-group`, and `eastus` with your desired workspace name, resource group, and region.
+
+---
+
+### 4. **Using the Azure Machine Learning Python SDK**
+If you prefer coding, you can use Python to create a workspace programmatically. Here's an example:
+
+```python
+from azure.ai.ml.entities import Workspace
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+
+# Authenticate and connect to Azure
+ml_client = MLClient(
+    DefaultAzureCredential(),
+    subscription_id="your-subscription-id",
+    resource_group="your-resource-group"
+)
+
+# Define the workspace
+workspace = Workspace(
+    name="my-workspace",
+    location="eastus",
+    description="My first Azure ML workspace"
+)
+
+# Create the workspace
+ml_client.workspaces.begin_create(workspace)
+```
+
+- **`DefaultAzureCredential`**: Automatically handles authentication.
+- **`subscription_id`**: Your Azure subscription ID.
+- **`resource_group`**: The resource group where the workspace will be created.
+- **`location`**: The Azure region for the workspace.
+
+---
+
+### Summary
+- **Azure Portal**: Best for beginners or those who prefer a visual interface.
+- **ARM Template**: Ideal for automation and repeatable deployments.
+- **Azure CLI**: Great for quick, scriptable commands.
+- **Python SDK**: Perfect for developers who want to integrate workspace creation into their code.
+
+
+
+
+ACCESS TO AZURE ML WORKSPACE 
+
+You can give individual users or teams access to the Azure Machine Learning workspace. Access is granted in Azure using role-based access control (RBAC), which you can configure in the Access control tab of the resource or resource group.
+
+In the access control tab, you can manage permissions to restrict what actions certain users or teams can perform. For example, you could create a policy that only allows users in the Azure administrators group to create compute targets and datastores. While users in the data scientists group can create and run jobs to train models, and register models.
+
+There are three general built-in roles that you can use across resources and resource groups to assign permissions to other users:
+
+Owner: Gets full access to all resources, and can grant access to others using access control.
+Contributor: Gets full access to all resources, but can't grant access to others.
+Reader: Can only view the resource, but isn't allowed to make any changes.
+Additionally, Azure Machine Learning has specific built-in roles you can use:
+
+AzureML Data Scientist: Can perform all actions within the workspace, except for creating or deleting compute resources, or editing the workspace settings.
+AzureML Compute Operator: Is allowed to create, change, and manage access the compute resources within a workspace.
+Finally, if the built-in roles aren't meeting your needs, you can create a custom role to assign permissions to other users.
+
+
+PLAIN ENGLISH 
+
+
+### Access to Azure Machine Learning Workspace in Plain English
+
+You can control who can access and use the Azure Machine Learning workspace by assigning roles to individuals or teams. This is done using **Role-Based Access Control (RBAC)**, which you can configure in the **Access control** section of the workspace or its resource group.
+
+---
+
+### How Access Control Works:
+1. **Granting Permissions**:
+   - You can assign roles to users or groups to define what they are allowed to do in the workspace.
+   - For example:
+     - Administrators can create compute resources and manage the workspace.
+     - Data scientists can run experiments and register models.
+
+2. **Built-in Roles**:
+   Azure provides three general roles that can be used across all resources:
+   - **Owner**: Full access to everything, including the ability to assign roles to others.
+   - **Contributor**: Full access to resources but cannot assign roles to others.
+   - **Reader**: Can only view resources but cannot make any changes.
+
+3. **Azure ML-Specific Roles**:
+   Azure Machine Learning also has roles tailored for machine learning tasks:
+   - **AzureML Data Scientist**: Can do everything in the workspace except creating/deleting compute resources or changing workspace settings.
+   - **AzureML Compute Operator**: Can create, modify, and manage compute resources.
+
+4. **Custom Roles**:
+   If the built-in roles don’t meet your needs, you can create a custom role to define specific permissions.
+
+---
+
+### Why Use RBAC?
+RBAC ensures that users only have access to the resources and actions they need, improving security and preventing accidental changes. For example:
+- Administrators can manage infrastructure.
+- Data scientists can focus on training and deploying models without worrying about infrastructure setup.
+
+
+
+
+IDENTIFY AZURE ML RESOURCES 
+
+Resources in Azure Machine Learning refer to the infrastructure you need to run a machine learning workflow. 
+Ideally, you want someone like an administrator to create and manage the resources.
+
+The resources in Azure Machine Learning include:
+
+The workspace
+Compute resources
+Datastores
+
+
+Create and manage the workspace
+The workspace is the top-level resource for Azure Machine Learning. Data scientists need access to the workspace to train and track models, and to deploy the models to endpoints.
+
+However, you want to be careful with who has full access to the workspace. Next to references to compute resources and datastores, you can find all logs, metrics, outputs, models, and snapshots of your code in the workspace.
+
+Create and manage compute resources
+One of the most important resources you need when training or deploying a model is compute. There are five types of compute in the Azure Machine Learning workspace:
+
+Compute instances: Similar to a virtual machine in the cloud, managed by the workspace. Ideal to use as a development environment to run (Jupyter) notebooks.
+Compute clusters: On-demand clusters of CPU or GPU compute nodes in the cloud, managed by the workspace. Ideal to use for production workloads as they automatically scale to your needs.
+Kubernetes clusters: Allows you to create or attach an Azure Kubernetes Service (AKS) cluster. Ideal to deploy trained machine learning models in production scenarios.
+Attached computes: Allows you to attach other Azure compute resources to the workspace, like Azure Databricks or Synapse Spark pools.
+Serverless compute: A fully managed, on-demand compute you can use for training jobs.
+
+
+Create and manage datastores
+The workspace doesn't store any data itself. Instead, all data is stored in datastores, which are references to Azure data services. The connection information to a data service that a datastore represents, is stored in the Azure Key Vault.
+
+When a workspace is created, an Azure Storage account is created and automatically connected to the workspace. As a result, you have four datastores already added to your workspace:
+
+workspaceartifactstore: Connects to the azureml container of the Azure Storage account created with the workspace. Used to store compute and experiment logs when running jobs.
+workspaceworkingdirectory: Connects to the file share of the Azure Storage account created with the workspace used by the Notebooks section of the studio. Whenever you upload files or folders to access from a compute instance, the files or folders are uploaded to this file share.
+workspaceblobstore: Connects to the Blob Storage of the Azure Storage account created with the workspace. Specifically the azureml-blobstore-... container. Set as the default datastore, which means that whenever you create a data asset and upload data, you store the data in this container.
+workspacefilestore: Connects to the file share of the Azure Storage account created with the workspace. Specifically the azureml-filestore-... file share.
+Additionally, you can create datastores to connect to other Azure data services. Most commonly, your datastores connects to an Azure Storage Account or Azure Data Lake Storage (Gen2) as those data services are most often used in data science projects.
+
+
+PLAIN ENGLISH 
+### Azure Machine Learning Resources in Plain English
+
+In Azure Machine Learning, **resources** are the infrastructure you need to run machine learning workflows. These resources are essential for tasks like training models, storing data, and deploying models. Here's a breakdown of the key resources:
+
+---
+
+### 1. **Workspace**
+- The **workspace** is the main resource in Azure Machine Learning. Think of it as the "control center" where everything is managed.
+- Data scientists use the workspace to:
+  - Train and track machine learning models.
+  - Deploy models to endpoints for predictions.
+- The workspace also stores important information like logs, metrics, outputs, models, and snapshots of your code.
+- Be cautious about who has full access to the workspace, as it contains sensitive information.
+
+---
+
+### 2. **Compute Resources**
+Compute resources are the machines or infrastructure used to run your machine learning tasks. There are five types of compute resources:
+
+1. **Compute Instances**:
+   - Like a virtual machine in the cloud.
+   - Ideal for development and running Jupyter notebooks.
+
+2. **Compute Clusters**:
+   - Groups of machines that automatically scale up or down based on your needs.
+   - Perfect for large-scale training or production workloads.
+
+3. **Kubernetes Clusters**:
+   - Allows you to create or attach an Azure Kubernetes Service (AKS) cluster.
+   - Best for deploying machine learning models in production.
+
+4. **Attached Computes**:
+   - Lets you connect other Azure compute resources, like Azure Databricks or Synapse Spark pools, to your workspace.
+
+5. **Serverless Compute**:
+   - Fully managed, on-demand compute for training jobs.
+   - You don’t need to manage the infrastructure.
+
+---
+
+### 3. **Datastores**
+- The workspace itself doesn’t store data. Instead, it uses **datastores** to connect to Azure data services.
+- A **datastore** is like a reference or pointer to where your data is stored (e.g., Azure Blob Storage or Data Lake).
+- The connection details for datastores are securely stored in **Azure Key Vault**.
+
+When you create a workspace, Azure automatically adds four built-in datastores:
+1. **workspaceartifactstore**:
+   - Stores logs and outputs from compute and experiments.
+2. **workspaceworkingdirectory**:
+   - Stores files and folders uploaded to the Notebooks section in the Azure ML studio.
+3. **workspaceblobstore**:
+   - The default datastore for storing uploaded data assets.
+4. **workspacefilestore**:
+   - Stores files in the file share of the Azure Storage account.
+
+You can also create custom datastores to connect to other Azure data services, like Azure Data Lake Storage (Gen2), which is commonly used in data science projects.
+
+---
+
+### Summary
+- **Workspace**: The central hub for managing machine learning projects.
+- **Compute Resources**: Machines for running experiments, training, and deploying models.
+- **Datastores**: Secure connections to external data storage services.
+
+
+
+IDENTIFY AZURE MACHINE LEARNING ASSETS 
+As a data scientist, you mostly work with assets in the Azure Machine Learning workspace. Assets are created and used at various stages of a project and include:
+
+Models
+Environments
+Data
+Components
+
+
+Create and manage models
+The end product of training a model is the model itself. You can train machine learning models with various frameworks, like Scikit-learn or PyTorch. 
+A common way to store such models is to package the model as a Python pickle file (.pkl extension).
+
+Alternatively, you can use the open-source platform MLflow to store your model in the MLModel format.
+
+Whatever format you choose, binary files represent the model and any corresponding metadata. To persist those files, you can create or register a model in the workspace.
+
+When you create a model in the workspace, you specify the name and version. Especially useful when you deploy the registered model, versioning allows you to track the specific model you want to use.
+
+Create and manage environments
+When you work with cloud compute, it's important to ensure that your code runs on any compute that is available to you. Whether you want to run a script on a compute instance, or a compute cluster, the code should execute successfully.
+
+Imagine working in Python or R, using open-source frameworks to train a model, on your local device. If you want to use a library such as Scikit-learn or PyTorch, you have to install it on your device.
+
+Similarly, when you write code that uses any frameworks or libraries, you need to ensure the necessary dependencies are installed on the compute that executes the code. To list all necessary requirements, you can create environments. When you create an environment, you have to specify the name and version.
+
+Environments specify software packages, environment variables, and software settings to run scripts. An environment is stored as an image in the Azure Container Registry created with the workspace when it's used for the first time.
+
+Whenever you want to run a script, you can specify the environment that needs to be used by the compute target. The environment installs all necessary requirements on the compute before executing the script, making your code robust and reusable across compute targets.
+
+
+
+
+Create and manage data
+Whereas datastores contain the connection information to Azure data storage services, data assets refer to a specific file or folder.
+
+You can use data assets to easily access data every time, without having to provide authentication every time you want to access it.
+
+When you create a data asset in the workspace, you specify the path to point to the file or folder, and the name and version.
+
+Create and manage components
+To train machine learning models, you write code. Across projects, there can be code you can reuse. Instead of writing code from scratch, you want to reuse snippets of code from other projects.
+
+To make it easier to share code, you can create a component in a workspace. To create a component, you have to specify the name, version, code, and environment needed to run the code.
+
+You can use components when creating pipelines. A component therefore often represents a step in a pipeline, for example to normalize data, to train a regression model, or to test the trained model on a validation dataset.
+
+
+PLAIN ENGLISH 
+### Azure Machine Learning Assets in Plain English
+
+In Azure Machine Learning, **assets** are the key elements you work with during a machine learning project. These assets are created and used at different stages of the project and include:
+
+---
+
+### 1. **Models**
+- A **model** is the result of training a machine learning algorithm on data.
+- You can train models using frameworks like Scikit-learn or PyTorch.
+- Models are often saved as binary files, such as `.pkl` (pickle files) or in the **MLflow** format.
+- Once trained, you can **register the model** in the Azure ML workspace. This allows you to:
+  - Assign a **name** and **version** to the model.
+  - Keep track of different versions of the model, which is helpful when deploying or updating models.
+
+---
+
+### 2. **Environments**
+- An **environment** ensures that your code runs consistently on any compute resource (e.g., virtual machines or clusters).
+- It includes:
+  - Software packages (e.g., Scikit-learn, PyTorch).
+  - Environment variables.
+  - Other dependencies needed to run your code.
+- Environments are stored as **images** in the Azure Container Registry.
+- When you run a script, the environment ensures all required software is installed on the compute resource before execution. This makes your code reusable and reliable across different compute targets.
+
+---
+
+### 3. **Data**
+- **Data assets** are references to specific files or folders that contain your data.
+- Unlike datastores (which store connection information to data storage services), data assets point to the actual data you want to use.
+- Benefits of data assets:
+  - Simplifies access to data without needing to re-authenticate every time.
+  - Allows you to specify a **name** and **version** for the data, making it easier to track changes.
+- Example: You can create a data asset that points to a CSV file or a folder containing multiple files.
+
+---
+
+### 4. **Components**
+- **Components** are reusable pieces of code that perform specific tasks in a machine learning workflow.
+- Instead of rewriting code for every project, you can create components for common tasks like:
+  - Normalizing data.
+  - Training a model.
+  - Testing a model on validation data.
+- Components are often used in **pipelines**, where each component represents a step in the workflow.
+
+---
+
+### Summary
+- **Models**: Store and version your trained machine learning models.
+- **Environments**: Ensure your code runs consistently by managing dependencies.
+- **Data**: Simplify access to data and track its versions.
+- **Components**: Reuse code for common tasks and build pipelines efficiently.
+
+
+
+Train models in the workspace
+Completed
+100 XP
+6 minutes
+To train models with the Azure Machine Learning workspace, you have several options:
+
+Use Automated Machine Learning.
+Run a Jupyter notebook.
+Run a script as a job.
+Explore algorithms and hyperparameter values with Automated Machine Learning
+When you have a training dataset and you're tasked with finding the best performing model, you might want to experiment with various algorithms and hyperparameter values.
+
+Manually experimenting with different configurations to train a model might take long. Alternatively, you can use Automated Machine Learning to speed up the process.
+
+Automated Machine Learning iterates through algorithms paired with feature selections to find the best performing model for your data.
+
+
+Run a notebook
+When you prefer to develop by running code in notebooks, you can use the built-in notebook feature in the workspace.
+
+The Notebooks page in the studio allows you to edit and run Jupyter notebooks.
+
+
+All files you clone or create in the notebooks section are stored in the file share of the Azure Storage account created with the workspace.
+
+To run notebooks, you use a compute instance as they're ideal for development and work similar to a virtual machine.
+
+You can also choose to edit and run notebooks in Visual Studio Code, while still using a compute instance to run the notebooks.
+
+Run a script as a job
+When you want to prepare your code to be production ready, it's better to use scripts. You can easily automate the execution of script to automate any machine learning workload.
+
+You can run a script as a job in Azure Machine Learning. When you submit a job to the workspace, all inputs and outputs are stored in the workspace.
+
+
+There are different types of jobs depending on how you want to execute a workload:
+
+Command: Execute a single script.
+Sweep: Perform hyperparameter tuning when executing a single script.
+Pipeline: Run a pipeline consisting of multiple scripts or components.
+
+
+
+PLAIN ENGLISH 
+### Training Models in Azure Machine Learning Workspace (Plain English)
+
+When working in Azure Machine Learning, you have several ways to train machine learning models. Here’s a simple explanation of the options:
+
+---
+
+### 1. **Use Automated Machine Learning (AutoML)**
+- **What it does**: AutoML helps you find the best model for your data by automatically testing different algorithms and settings (hyperparameters).
+- **Why it’s useful**: Instead of manually trying different configurations, AutoML speeds up the process by automating the experimentation.
+- **How it works**: It runs multiple experiments with different algorithms and feature selections to identify the best-performing model for your dataset.
+
+---
+
+### 2. **Run a Jupyter Notebook**
+- **What it does**: You can write and run code interactively in a notebook, which is great for experimentation and development.
+- **Where to do it**: Use the built-in **Notebooks** feature in the Azure ML Studio or run notebooks in **Visual Studio Code** while connecting to a compute instance.
+- **How it works**:
+  - Notebooks are stored in the Azure Storage account linked to your workspace.
+  - You use a **compute instance** (a virtual machine) to run the notebook.
+
+---
+
+### 3. **Run a Script as a Job**
+- **What it does**: When you’re ready to move from experimentation to production, you can run your code as a script. This is more structured and easier to automate.
+- **How it works**:
+  - Submit the script as a **job** to the Azure ML workspace.
+  - The workspace stores all inputs (like data) and outputs (like models or logs) for the job.
+
+---
+
+### Types of Jobs
+Depending on your needs, you can run different types of jobs:
+1. **Command Job**: Runs a single script.
+2. **Sweep Job**: Automatically tests different hyperparameter values to find the best configuration.
+3. **Pipeline Job**: Runs a sequence of steps (scripts or components) as part of a workflow, such as data preprocessing, training, and evaluation.
+
+---
+
+### Summary
+- **AutoML**: Automates finding the best model.
+- **Notebooks**: Ideal for interactive development and experimentation.
+- **Scripts as Jobs**: Best for production-ready workflows, with options for single scripts, hyperparameter tuning, or multi-step pipelines.
+
+
+
+
+
+
+
+EXPLORING DEVELOPER TOOLS FOR WORKSPACE INTERACTION 
+
+
+OBJECTIVES 
+The Azure Machine Learning studio.
+The Python Software Development Kit (SDK).
+The Azure Command Line Interface (CLI).
+
+
+Explore the studio
+The easiest and most intuitive way to interact with the Azure Machine Learning workspace, is by using the studio.
+
+The Azure Machine Learning studio is a web portal, which provides an overview of all resources and assets available in the workspace.
+
+Access the studio
+After you've created an Azure Machine Learning workspace, there are two common ways to access the Azure Machine Learning studio:
+
+Launch the studio from the Overview page of the Azure Machine Learning workspace resource in the Azure portal.
+Navigate to the studio directly by signing in at https://ml.azure.com using the credentials associated with your Azure subscription.
+When you've opened your workspace in the Azure Machine Learning studio, a menu appears in the sidebar.
+
+The menu shows what you can do in the studio:
+
+Author: Create new jobs to train and track a machine learning model.
+Assets: Create and review assets you use when training models.
+Manage: Create and manage resources you need to train models.
+Though you can use each tool at any time, the studio is ideal for quick experimentation or when you want to explore your past jobs.
+
+For example, use the studio if you want to verify that your pipeline ran successfully. Or when a pipeline job has failed, you can use the studio to navigate to the logs and review the error messages.
+
+For more repetitive work, or tasks that you'd like to automate, the Azure CLI or Python SDK are better suited as these tools allow you to define your work in code.
+
+
+EXPLORE THE PYTHON SDK 
+
+- Install the Python SDK
+pip install azure-ai-ml
+
+
+Connect to the workspace
+After the Python SDK is installed, you'll need to connect to the workspace. By connecting, you're authenticating your environment to interact with the workspace 
+to create and manage assets and resources.
+
+To authenticate, you need the values to three necessary parameters:
+
+subscription_id: Your subscription ID.
+resource_group: The name of your resource group.
+workspace_name: The name of your workspace.
+Next, you can define the authentication by using the following code:
+
+
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+
+ml_client = MLClient(
+    DefaultAzureCredential(), subscription_id, resource_group, workspace
+)
+
+
+After defining the authentication, you need to call MLClient for the environment to connect to the workspace. 
+You'll call MLClient anytime you want to create or update an asset or resource in the workspace.
+
+For example, you'll connect to the workspace when you create a new job to train a model:
+
+from azure.ai.ml import command
+
+# configure job
+job = command(
+    code="./src",
+    command="python train.py",
+    environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest",
+    compute="aml-cluster",
+    experiment_name="train-model"
+)
+
+# connect to workspace and submit job
+returned_job = ml_client.create_or_update(job)
+
+
+PLAIN ENGLISH 
+
+### Exploring the Azure Machine Learning Python SDK in Plain English
+
+The **Azure Machine Learning Python SDK** allows you to interact with your Azure Machine Learning workspace programmatically. Here's how you can use it:
+
+---
+
+### 1. **Install the Python SDK**
+- To use the SDK, you first need to install it. Run the following command in your terminal or command prompt:
+  ```bash
+  pip install azure-ai-ml
+  ```
+
+---
+
+### 2. **Connect to the Workspace**
+- After installing the SDK, you need to connect to your Azure Machine Learning workspace. This step authenticates your environment so you can manage resources and assets in the workspace.
+
+#### What You Need:
+- **subscription_id**: Your Azure subscription ID.
+- **resource_group**: The name of the resource group where your workspace is located.
+- **workspace_name**: The name of your Azure Machine Learning workspace.
+
+#### Code to Connect:
+```python
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+
+# Authenticate and connect to the workspace
+ml_client = MLClient(
+    DefaultAzureCredential(),  # Handles authentication
+    subscription_id="your-subscription-id",
+    resource_group="your-resource-group",
+    workspace_name="your-workspace-name"
+)
+```
+- **`DefaultAzureCredential`**: Automatically handles authentication using your Azure account.
+
+---
+
+### 3. **Use the SDK to Create or Manage Resources**
+Once connected, you can use the `MLClient` object to create or update resources in your workspace. For example, you can submit a job to train a machine learning model.
+
+#### Example: Submitting a Training Job
+```python
+from azure.ai.ml import command
+
+# Configure the job
+job = command(
+    code="./src",  # Path to your training script
+    command="python train.py",  # Command to run the script
+    environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest",  # Predefined environment
+    compute="aml-cluster",  # Compute target
+    experiment_name="train-model"  # Name of the experiment
+)
+
+# Submit the job to the workspace
+returned_job = ml_client.create_or_update(job)
+```
+
+#### What Happens:
+1. **Code**: Specifies the location of your training script.
+2. **Environment**: Defines the software and dependencies needed to run the script (e.g., Scikit-learn).
+3. **Compute**: Specifies the compute resource (e.g., a cluster) where the job will run.
+4. **Experiment**: Groups related jobs for tracking purposes.
+
+---
+
+### Summary
+- **Install the SDK**: Use `pip install azure-ai-ml`.
+- **Connect to the Workspace**: Authenticate using your subscription, resource group, and workspace name.
+- **Submit Jobs**: Use the SDK to configure and run jobs, manage resources, and track experiments.
+
+
+COMMAND LINE INTERFACE (CLI) 
+Another code-based approach to interact with the Azure Machine Learning workspace is the command-line interface (CLI). As a data scientist, you may not work with the CLI as much as you do with Python. The Azure CLI is commonly used by administrators and engineers to automate tasks in Azure.
+
+There are many advantages to using the Azure CLI with Azure Machine Learning. The Azure CLI allows you to:
+
+Automate the creation and configuration of assets and resources to make it repeatable.
+Ensure consistency for assets and resources that must be replicated in multiple environments (for example, development, test, and production).
+Incorporate machine learning asset configuration into developer operations (DevOps) workflows, such as continuous integration and continuous deployment (CI/CD) pipelines.
+To interact with the Azure Machine Learning workspace using the Azure CLI, you'll need to install the Azure CLI and the Azure Machine Learning extension.
+
+Install the Azure CLI
+You can install the Azure CLI on a Linux, Mac, or Windows computer. With the Azure CLI, you run commands or scripts to manage Azure resources. 
+You can also use the Azure CLI from a browser through the Azure Cloud Shell. No matter which platform you choose, you can execute the same tasks. 
+But, the installation of the Azure CLI, the commands, and scripts are different across platforms.
+
+
+Install the Azure Machine Learning extension
+After you've installed the Azure CLI, or set up the Azure Cloud Shell, you need to install the Azure Machine Learning extension 
+to manage Azure Machine Learning resources using the Azure CLI.
+
+You can install the Azure Machine Learning extension ml with the following command:
+
+az extension add -n ml -y
+
+
+You can then run the help command -h to check that the extension is installed and to get a list of commands available with this extension. 
+The list gives an overview of the tasks you can execute with the Azure CLI extension for Azure Machine Learning:
+
+az ml -h
+
+Work with the Azure CLI
+To use the Azure CLI to interact with the Azure Machine Learning workspace, you'll use commands. Each command is prefixed with az ml. You can find the list of commands in the reference documentation of the CLI.
+
+For example, to create a compute target, you can use the following command:
+
+az ml compute create --name aml-cluster --size STANDARD_DS3_v2 --min-instances 0 --max-instances 5 --type AmlCompute --resource-group my-resource-group --workspace-name my-workspace
+
+
+To explore all possible parameters that you can use with a command, you can review the reference documentation for the specific command.
+
+As you define the parameters for an asset or resource you want to create, you may prefer using YAML files to define the configuration instead. When you store all parameter values in a YAML file, it becomes easier to organize and automate tasks.
+
+For example, you can also create the same compute target by first defining the configuration in a YAML file:
+
+
+$schema: https://azuremlschemas.azureedge.net/latest/amlCompute.schema.json 
+name: aml-cluster
+type: amlcompute
+size: STANDARD_DS3_v2
+min_instances: 0
+max_instances: 5
+
+
+All possible parameters that you can include in the YAML file can be found in the reference documentation for the specific asset or resource you want to create like a compute cluster.
+
+When you saved the YAML file as compute.yml, you can create the compute target with the following command:
+
+
+Azure cli 
+az ml compute create --file compute.yml --resource-group my-resource-group --workspace-name my-workspace
+
+PLAIN ENGLISH 
+
+### Azure Machine Learning Command-Line Interface (CLI) in Plain English
+
+The **Azure CLI** is a tool that allows you to manage Azure resources, including Azure Machine Learning, by running commands in a terminal. It’s especially useful for automating tasks, ensuring consistency, and integrating with DevOps workflows.
+
+---
+
+### Why Use the Azure CLI?
+1. **Automation**: You can automate the creation and configuration of resources, making repetitive tasks easier.
+2. **Consistency**: Ensures that resources are set up the same way across different environments (e.g., development, testing, production).
+3. **DevOps Integration**: You can include CLI commands in CI/CD pipelines to manage machine learning workflows.
+
+---
+
+### How to Set Up the Azure CLI
+1. **Install the Azure CLI**:
+   - Install it on your computer (Linux, Mac, or Windows) or use the **Azure Cloud Shell** in your browser.
+   - The Azure CLI lets you run commands to manage Azure resources.
+
+2. **Install the Azure Machine Learning Extension**:
+   - After installing the Azure CLI, add the Azure Machine Learning extension with this command:
+     ```bash
+     az extension add -n ml -y
+     ```
+   - Use the `-h` (help) command to check the extension and see available commands:
+     ```bash
+     az ml -h
+     ```
+
+---
+
+### Using the Azure CLI for Azure Machine Learning
+- **Commands**: All Azure Machine Learning commands start with `az ml`. For example:
+  - To create a compute cluster:
+    ```bash
+    az ml compute create --name aml-cluster --size STANDARD_DS3_v2 --min-instances 0 --max-instances 5 --type AmlCompute --resource-group my-resource-group --workspace-name my-workspace
+    ```
+    - **`--name`**: Name of the compute cluster.
+    - **`--size`**: Type of virtual machine to use.
+    - **`--min-instances`/`--max-instances`**: Minimum and maximum number of nodes.
+    - **`--type`**: Type of compute (e.g., AmlCompute).
+
+---
+
+### Using YAML Files for Configuration
+- Instead of typing all parameters in the command, you can define them in a **YAML file**. This makes tasks easier to organize and automate.
+- Example YAML file (`compute.yml`):
+  ```yaml
+  $schema: https://azuremlschemas.azureedge.net/latest/amlCompute.schema.json
+  name: aml-cluster
+  type: amlcompute
+  size: STANDARD_DS3_v2
+  min_instances: 0
+  max_instances: 5
+  ```
+- To create the compute cluster using the YAML file:
+  ```bash
+  az ml compute create --file compute.yml --resource-group my-resource-group --workspace-name my-workspace
+  ```
+
+---
+
+### Summary
+- **Azure CLI**: A powerful tool for managing Azure Machine Learning resources.
+- **Automation**: Use commands or YAML files to automate tasks.
+- **Consistency**: Ensures resources are created the same way every time.
+- **DevOps**: Easily integrate with CI/CD pipelines.
+
+
+
+MAKING DATA AVAILABLE IN AZURE MACHINE LEARNING 
+
+
+UNDERSTANDING URIs -> Uniform Resource Identifiers 
+
+Understand URIs
+A URI references the location of your data. For Azure Machine Learning to connect to your data, 
+you need to prefix the URI with the appropriate protocol. 
+There are three common protocols when working with data in the context of Azure Machine Learning:
+
+http(s): Use for data stores publicly or privately in an Azure Blob Storage or publicly available http(s) location.
+abfs(s): Use for data stores in an Azure Data Lake Storage Gen 2.
+azureml: Use for data stored in a datastore.
+
+For example, you may create an Azure Blob Storage in Azure. To store data, you create a container named training-data. 
+Within the container, you create a folder datastore-path. 
+Within the folder, you store the CSV file diabetes.csv.
+
+When you want to access the data from the Azure Machine Learning workspace, you can use the path to the folder or file directly. 
+When you want to connect to the folder or file directly, you can use the http(s) protocol. 
+If the container is set to private, you'll need to provide some kind of authentication to get access to the data, 
+like a Shared Access Signature (SAS).
+
+When you create a datastore in Azure Machine Learning, you'll store the connection and 
+authentication information in the workspace. Then, to access the data in the container, you can use the azureml protocol.
+
+It's considered a best practice to avoid any sensitive data in your code, like authentication information. 
+Therefore, whenever possible, you should work with datastores and data assets in Azure Machine Learning. 
+However, during experimentation in notebooks, you may want to connect directly to a storage location 
+to avoid unnecessary overhead.
+
+
+
+CREATE A DATASTORE 
+
+
+In Azure Machine Learning, datastores are abstractions for cloud data sources. 
+They encapsulate the information needed to connect to data sources, and securely store 
+this connection information so that you don’t have to code it in your scripts.
+
+The benefits of using datastores are:
+
+Provides easy-to-use URIs to your data storage.
+Facilitates data discovery within Azure Machine Learning.
+Securely stores connection information, without exposing secrets and keys to data scientists.
+When you create a datastore with an existing storage account on Azure, you have the choice 
+between two different authentication methods:
+
+Credential-based: Use a service principal, shared access signature (SAS) token or account key to authenticate access to your storage account.
+Identity-based: Use your Microsoft Entra identity or managed identity.
+Understand types of datastores
+Azure Machine Learning supports the creation of datastores for multiple kinds of Azure data source, including:
+
+Azure Blob Storage
+Azure File Share
+Azure Data Lake (Gen 2)
+
+
+Use the built-in datastores
+Every workspace has four built-in datastores (two connecting to Azure Storage blob containers, and two connecting to Azure Storage file shares), which are used as system storages by Azure Machine Learning.
+
+In most machine learning projects, you need to work with data sources of your own. For example, you can integrate your machine learning solution with data from existing applications or data engineering pipelines.
+
+Create a datastore
+Datastores are attached to workspaces and are used to store connection information to storage services. When you create a datastore, you provide a name that can be used to retrieve the connection information.
+
+Datastores allow you to easily connect to storage services without having to provide all necessary details every time you want to read or write data. It also creates a protective layer if you want users to use the data, but not connect to the underlying storage service directly.
+
+Create a datastore for an Azure Blob Storage container
+You can create a datastore through the graphical user interface, the Azure command-line interface (CLI), or the Python software development kit (SDK).
+
+Depending on the storage service you want to connect to, there are different options for Azure Machine Learning to authenticate.
+
+For example, when you want to create a datastore to connect to an Azure Blob Storage container, you can use an account key:
+
+blob_datastore = AzureBlobDatastore(
+    			name = "blob_example",
+    			description = "Datastore pointing to a blob container",
+    			account_name = "mytestblobstore",
+    			container_name = "data-container",
+    			credentials = AccountKeyConfiguration(
+        			account_key="XXXxxxXXXxXXXXxxXXX"
+    			),
+)
+ml_client.create_or_update(blob_datastore)
+
+Alternatively, you can create a datastore to connect to an Azure Blob Storage container by using a SAS token to authenticate:
+
+blob_datastore = AzureBlobDatastore(
+name="blob_sas_example",
+description="Datastore pointing to a blob container",
+account_name="mytestblobstore",
+container_name="data-container",
+credentials=SasTokenConfiguration(
+sas_token="?xx=XXXX-XX-XX&xx=xxxx&xxx=xxx&xx=xxxxxxxxxxx&xx=XXXX-XX-XXXXX:XX:XXX&xx=XXXX-XX-XXXXX:XX:XXX&xxx=xxxxx&xxx=XXxXXXxxxxxXXXXXXXxXxxxXXXXXxxXXXXXxXXXXxXXXxXXxXX"
+),
+)
+ml_client.create_or_update(blob_datastore)
+
+
+
+CREATE A DATA ASSET 
+
+Create a data asset
+
+As a data scientist, you want to focus on training machine learning models. Though you need access to data as input for a machine learning model, you don't want to worry about how to get access. To simplify getting access to the data you want to work with, you can use data assets.
+
+Understand data assets
+In Azure Machine Learning, data assets are references to where the data is stored, how to get access, and any other relevant metadata. You can create data assets to get access to data in datastores, Azure storage services, public URLs, or data stored on your local device.
+
+The benefits of using data assets are:
+
+You can share and reuse data with other members of the team such that they don't need to remember file locations.
+You can seamlessly access data during model training (on any supported compute type) without worrying about connection strings or data paths.
+You can version the metadata of the data asset.
+There are three main types of data assets you can use:
+
+URI file: Points to a specific file.
+URI folder: Points to a folder.
+MLTable: Points to a folder or file, and includes a schema to read as tabular data.
+
+
+When to use data assets
+Data assets are most useful when executing machine learning tasks as Azure Machine Learning jobs. As a job, you can run a Python script that takes inputs and generates outputs. A data asset can be parsed as both an input or output of an Azure Machine Learning job.
+
+Let’s take a look at each of the types of data assets, how to create them, and how to use the data asset in a job.
+
+Create a URI file data asset
+A URI file data asset points to a specific file. Azure Machine Learning only stores the path to the file, which means you can point to any type of file. When you use the data asset, you specify how you want to read the data, which depends on the type of data you're connecting to.
+
+The supported paths you can use when creating a URI file data asset are:
+
+Local: ./<path>
+Azure Blob Storage: wasbs://<account_name>.blob.core.windows.net/<container_name>/<folder>/<file>
+Azure Data Lake Storage (Gen 2): abfss://<file_system>@<account_name>.dfs.core.windows.net/<folder>/<file>
+Datastore: azureml://datastores/<datastore_name>/paths/<folder>/<file>
+
+To create a URI file data asset, you can use the following code:
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
+
+my_path = '<supported-path>'
+
+my_data = Data(
+    path=my_path,
+    type=AssetTypes.URI_FILE,
+    description="<description>",
+    name="<name>",
+    version="<version>"
+)
+
+ml_client.data.create_or_update(my_data)
+
+
+When you parse the URI file data asset as input in an Azure Machine Learning job, you first need to read the data before you can work with it.
+
+Imagine you create a Python script you want to run as a job, and you set the value of the input parameter input_data to be the 
+URI file data asset (which points to a CSV file). You can read the data by including the following code in your Python script:
+
+import argparse
+import pandas as pd
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--input_data", type=str)
+args = parser.parse_args()
+
+df = pd.read_csv(args.input_data)
+print(df.head(10))
+
+
+If your URI file data asset points to a different type of file, you need to use 
+the appropriate Python code to read the data. For example, if instead of CSV files, 
+you're working with JSON files, you'd use pd.read_json() instead.
+
+Create a URI folder data asset
+A URI folder data asset points to a specific folder. It works similar to a URI file data asset and supports the same paths.
+
+To create a URI folder data asset with the Python SDK, you can use the following code:
+
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
+
+my_path = '<supported-path>'
+
+my_data = Data(
+    path=my_path,
+    type=AssetTypes.URI_FOLDER,
+    description="<description>",
+    name="<name>",
+    version='<version>'
+)
+
+ml_client.data.create_or_update(my_data)
+
+
+When you parse the URI folder data asset as input in an Azure Machine Learning job, you first need to read the data before you can work with it.
+
+Imagine you create a Python script you want to run as a job, and you set the value of the input parameter input_data 
+to be the URI folder data asset (which points to multiple CSV files). You can read all CSV files in the folder and 
+concatenate them, which you can do by including the following code in your Python script:
+
+
+import argparse
+import glob
+import pandas as pd
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--input_data", type=str)
+args = parser.parse_args()
+
+data_path = args.input_data
+all_files = glob.glob(data_path + "/*.csv")
+df = pd.concat((pd.read_csv(f) for f in all_files), sort=False)
+
+
+
+Create a MLTable data asset
+A MLTable data asset allows you to point to tabular data. When you create a MLTable data asset, you specify the schema definition to read the data. As the schema is already defined and stored with the data asset, you don't have to specify how to read the data when you use it.
+
+Therefore, you want to use a MLTable data asset when the schema of your data is complex or changes frequently. Instead of changing how to read the data in every script that uses the data, you only have to change it in the data asset itself.
+
+When you define the schema when creating a MLTable data asset, you can also choose to only specify a subset of the data.
+
+For certain features in Azure Machine Learning, like Automated Machine Learning, you need to use a MLTable data asset, as Azure Machine Learning needs to know how to read the data.
+
+To define the schema, you can include a MLTable file in the same folder as the data you want to read. The MLTable file includes the path pointing to the data you want to read, and how to read the data:
+
+
+type: mltable
+
+paths:
+  - pattern: ./*.txt
+transformations:
+  - read_delimited:
+      delimiter: ','
+      encoding: ascii
+      header: all_files_same_headers
+
+To create a MLTable data asset with the Python SDK, you can use the following code:
+
+from azure.ai.ml.entities import Data
+from azure.ai.ml.constants import AssetTypes
+
+my_path = '<path-including-mltable-file>'
+
+my_data = Data(
+    path=my_path,
+    type=AssetTypes.MLTABLE,
+    description="<description>",
+    name="<name>",
+    version='<version>'
+)
+
+ml_client.data.create_or_update(my_data)
+
+
+When you parse a MLTable data asset as input to a Python script you want to run as an Azure Machine Learning job, you can include the following code to read the data:
+
+import argparse
+import mltable
+import pandas
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--input_data", type=str)
+args = parser.parse_args()
+
+tbl = mltable.load(args.input_data)
+df = tbl.to_pandas_dataframe()
+
+print(df.head(10))
+
+
+A common approach is to convert the tabular data to a Pandas data frame. 
+However, you can also convert the data to a Spark data frame if that suits your workload better.
+
+
+PLAIN ENGLISH 
+
+### Making Data Available in Azure Machine Learning (Plain English)
+
+When working with Azure Machine Learning, you need to make your data accessible for training and other tasks. Here’s how it works:
+
+---
+
+### **Understanding URIs (Uniform Resource Identifiers)**
+- A **URI** is like an address that tells Azure Machine Learning where your data is stored.
+- You need to use the correct **protocol** to access your data:
+  1. **http(s)**: For data stored in public or private Azure Blob Storage or any publicly available URL.
+  2. **abfs(s)**: For data stored in Azure Data Lake Storage Gen 2.
+  3. **azureml**: For data stored in a **datastore** (a secure connection to your data).
+
+#### Example:
+- If you have a file `diabetes.csv` stored in an Azure Blob Storage container, you can access it using:
+  - **http(s)** if the container is public.
+  - **azureml** if you’ve set up a datastore for secure access.
+
+---
+
+### **Creating a Datastore**
+A **datastore** is a secure connection to your cloud data storage. It stores the connection details (like authentication keys) so you don’t have to include sensitive information in your code.
+
+#### Benefits of Datastores:
+1. Simplifies access to data with easy-to-use URIs.
+2. Keeps connection details secure.
+3. Makes it easier to discover and use data in Azure Machine Learning.
+
+#### Types of Datastores:
+- **Azure Blob Storage**
+- **Azure File Share**
+- **Azure Data Lake Storage Gen 2**
+
+#### How to Create a Datastore:
+1. **Credential-based Authentication**: Use a service principal, SAS token, or account key.
+2. **Identity-based Authentication**: Use your Microsoft Entra (Azure AD) identity or managed identity.
+
+#### Example Code (Python SDK):
+- Using an **account key**:
+  ```python
+  from azure.ai.ml.entities import AzureBlobDatastore
+  from azure.ai.ml.entities import AccountKeyConfiguration
+
+  blob_datastore = AzureBlobDatastore(
+      name="blob_example",
+      description="Datastore pointing to a blob container",
+      account_name="mytestblobstore",
+      container_name="data-container",
+      credentials=AccountKeyConfiguration(account_key="your-account-key"),
+  )
+  ml_client.create_or_update(blob_datastore)
+  ```
+
+- Using a **SAS token**:
+  ```python
+  from azure.ai.ml.entities import AzureBlobDatastore
+  from azure.ai.ml.entities import SasTokenConfiguration
+
+  blob_datastore = AzureBlobDatastore(
+      name="blob_sas_example",
+      description="Datastore pointing to a blob container",
+      account_name="mytestblobstore",
+      container_name="data-container",
+      credentials=SasTokenConfiguration(sas_token="your-sas-token"),
+  )
+  ml_client.create_or_update(blob_datastore)
+  ```
+
+---
+
+### **Creating a Data Asset**
+A **data asset** is a reference to your data (e.g., a file or folder). It simplifies access to data during machine learning tasks.
+
+#### Benefits of Data Assets:
+1. Makes data reusable and shareable across teams.
+2. Simplifies access during training without needing connection details.
+3. Allows versioning of data for better tracking.
+
+#### Types of Data Assets:
+1. **URI File**: Points to a specific file.
+2. **URI Folder**: Points to a folder.
+3. **MLTable**: Points to tabular data with a schema for reading it.
+
+#### Example Code (Python SDK):
+- **URI File**:
+  ```python
+  from azure.ai.ml.entities import Data
+  from azure.ai.ml.constants import AssetTypes
+
+  my_data = Data(
+      path="azureml://datastores/mydatastore/paths/myfile.csv",
+      type=AssetTypes.URI_FILE,
+      description="A single file",
+      name="my-data-asset",
+      version="1",
+  )
+  ml_client.data.create_or_update(my_data)
+  ```
+
+- **URI Folder**:
+  ```python
+  my_data = Data(
+      path="azureml://datastores/mydatastore/paths/myfolder/",
+      type=AssetTypes.URI_FOLDER,
+      description="A folder of files",
+      name="my-folder-asset",
+      version="1",
+  )
+  ml_client.data.create_or_update(my_data)
+  ```
+
+- **MLTable**:
+  ```python
+  my_data = Data(
+      path="azureml://datastores/mydatastore/paths/mltable-folder/",
+      type=AssetTypes.MLTABLE,
+      description="Tabular data",
+      name="my-mltable-asset",
+      version="1",
+  )
+  ml_client.data.create_or_update(my_data)
+  ```
+
+---
+
+### **Using Data Assets in Jobs**
+When running a machine learning job, you can pass a data asset as input. For example:
+- **Reading a CSV file**:
+  ```python
+  import argparse
+  import pandas as pd
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--input_data", type=str)
+  args = parser.parse_args()
+
+  df = pd.read_csv(args.input_data)
+  print(df.head(10))
+  ```
+
+- **Reading multiple CSV files from a folder**:
+  ```python
+  import argparse
+  import glob
+  import pandas as pd
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--input_data", type=str)
+  args = parser.parse_args()
+
+  all_files = glob.glob(args.input_data + "/*.csv")
+  df = pd.concat((pd.read_csv(f) for f in all_files), sort=False)
+  ```
+
+- **Using MLTable**:
+  ```python
+  import argparse
+  import mltable
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--input_data", type=str)
+  args = parser.parse_args()
+
+  tbl = mltable.load(args.input_data)
+  df = tbl.to_pandas_dataframe()
+  print(df.head(10))
+  ```
+
+---
+
+### Summary
+- **URIs**: Identify where your data is stored.
+- **Datastores**: Securely connect to cloud storage without exposing sensitive details.
+- **Data Assets**: Simplify access to data and make it reusable.
+- **Python SDK**: Use code to create and manage datastores and data assets.
+
+
+
+
+WORK WITH COMPUTE TARGETS IN AZURE MACHINE LEARNING 
+
+TYPES OF COMPUTE 
+
+Compute instance: Behaves similarly to a virtual machine and is primarily used to run notebooks. It's ideal for experimentation.
+Compute clusters: Multi-node clusters of virtual machines that automatically scale up or down to meet demand. A cost-effective way to run scripts that need to process large volumes of data. Clusters also allow you to use parallel processing to distribute the workload and reduce the time it takes to run a script.
+Kubernetes clusters: Cluster based on Kubernetes technology, giving you more control over how the compute is configured and managed. You can attach your self-managed Azure Kubernetes (AKS) cluster for cloud compute, or an Arc Kubernetes cluster for on-premises workloads.
+Attached compute: Allows you to attach existing compute like Azure virtual machines or Azure Databricks clusters to your workspace.
+Serverless compute: A fully managed, on-demand compute you can use for training jobs.
+
+
+When to use which type of compute?
+In general, there are some best practices that you can follow when working with compute targets. To understand how to choose the appropriate type of compute, several examples are provided. Remember that which type of compute you use always depends on your specific situation.
+
+Choose a compute target for experimentation
+Imagine you're a data scientist and you're asked to develop a new machine learning model. You likely have a small subset of the training data with which you can experiment.
+
+During experimentation and development, you prefer working in a Jupyter notebook. A notebook experience benefits most from a compute that is continuously running.
+
+Many data scientists are familiar with running notebooks on their local device. A cloud alternative managed by Azure Machine Learning is a compute instance. Alternatively, you can also opt for Spark serverless compute to run Spark code in notebooks, if you want to make use of Spark's distributed compute power.
+
+Choose a compute target for production
+After experimentation, you can train your models by running Python scripts to prepare for production. Scripts will be easier to automate and schedule for when you want to retrain your model continuously over time. You can run scripts as (pipeline) jobs.
+
+When moving to production, you want the compute target to be ready to handle large volumes of data. The more data you use, the better the machine learning model is likely to be.
+
+When training models with scripts, you want an on-demand compute target. A compute cluster automatically scales up when the script(s) need to be executed, and scales down when the script finishes executing. If you want an alternative that you don't have to create and manage, you can use Azure Machine Learning's serverless compute.
+
+Choose a compute target for deployment
+The type of compute you need when using your model to generate predictions depends on whether you want batch or real-time predictions.
+
+For batch predictions, you can run a pipeline job in Azure Machine Learning. Compute targets like compute clusters and Azure Machine Learning's serverless compute are ideal for pipeline jobs as they're on-demand and scalable.
+
+When you want real-time predictions, you need a type of compute that is running continuously. 
+Real-time deployments therefore benefit from more lightweight (and thus more cost-efficient) compute. 
+Containers are ideal for real-time deployments. When you deploy your model to a managed online endpoint, 
+Azure Machine Learning creates and manages containers for you to run your model. 
+Alternatively, you can attach Kubernetes clusters to manage the necessary compute to generate real-time predictions.
+
+
+
+CREATE AND USE COMPUTE INSTANCE 
+
+To create a compute instance with the Python SDK, you can use the following code:
+
+from azure.ai.ml.entities import ComputeInstance
+
+ci_basic_name = "basic-ci-12345"
+ci_basic = ComputeInstance(
+    name=ci_basic_name, 
+    size="STANDARD_DS3_v2"
+)
+ml_client.begin_create_or_update(ci_basic).result()
+
+
+To understand which parameters the ComputeInstance class expects, you can review the reference documentation.
+
+
+Alternatively, you can also create a compute instance by using a script. With a script, you ensure that any necessary packages, 
+tools, or software is automatically installed on the compute and you can clone any repositories to the compute instance. 
+When you need to create compute instances for multiple users, using a script allows you to create a consistent development 
+environment for everyone.
+
+
+Assign a compute instance to a user
+As a data scientist, you can attach a compute instance to notebooks to run cells within the notebook. 
+To be allowed to work with the compute instance, it needs to be assigned to you as a user.
+
+A compute instance can only be assigned to one user, as the compute instance can't handle parallel workloads. 
+When you create a new compute instance, you can assign it to someone else if you have the appropriate permissions.
+
+
+
+Minimize compute time
+When you're actively working on code in a notebook, you want your compute instance to be running. 
+When you're not executing any code, you want your compute instance to be stopped to save on costs.
+
+When a compute instance is assigned to you, you can start and stop a compute instance whenever you need. 
+You can also add a schedule to the compute instance to start or stop at set times. 
+Additionally, you can configure a compute to automatically shut down when it has been idle for a set amount of time.
+
+By scheduling your compute instance to stop at the end of every day, you avoid unnecessary costs 
+if you forget to stop a compute instance.
+
+Use a compute instance
+To use a compute instance, you need an application that can host notebooks. 
+The easiest option to work with the compute instance is through the integrated notebooks 
+experience in the Azure Machine Learning studio.
+
+You can prefer to work with Visual Studio Code for easier source control of your code. 
+If you want to edit and run code in Visual Studio Code, you can attach a compute instance to run notebook cells remotely.
+
+
+
+CREATE AND USE A COMPUTE CLUSTER 
+
+After experimentation and development, you want your code to be production-ready. 
+When you run code in production environments, it's better to use scripts instead of notebooks. 
+When you run a script, you want to use a compute target that is scalable.
+
+Within Azure Machine Learning, compute clusters are ideal for running scripts. 
+You can create a compute cluster in the Azure Machine Learning studio, using the 
+Azure command-line interface (CLI), or the Python software development kit (SDK).
+
+
+PLAIN ENGLISH 
+### Working with Compute Targets in Azure Machine Learning (Plain English)
+
+In Azure Machine Learning, **compute targets** are the machines or resources you use to run your machine learning tasks, such as training models or generating predictions. Here's a breakdown of the types of compute and when to use them:
+
+---
+
+### **Types of Compute**
+1. **Compute Instance**:
+   - Acts like a virtual machine.
+   - Best for running Jupyter notebooks during experimentation.
+   - Ideal for small-scale development and testing.
+
+2. **Compute Clusters**:
+   - Groups of virtual machines that scale up or down automatically.
+   - Best for running scripts that process large datasets or require parallel processing.
+   - Cost-effective for production workloads.
+
+3. **Kubernetes Clusters**:
+   - Based on Kubernetes technology.
+   - Provides more control over compute configuration.
+   - Can be used for real-time predictions or custom workloads.
+
+4. **Attached Compute**:
+   - Lets you connect existing compute resources (e.g., Azure Databricks or virtual machines) to your workspace.
+
+5. **Serverless Compute**:
+   - Fully managed, on-demand compute.
+   - Ideal for training jobs without needing to manage infrastructure.
+
+---
+
+### **When to Use Each Compute Type**
+1. **For Experimentation**:
+   - Use a **Compute Instance** for running notebooks interactively.
+   - If you need distributed compute power, use **Spark serverless compute**.
+
+2. **For Production**:
+   - Use **Compute Clusters** for training models with large datasets.
+   - Clusters automatically scale up when needed and scale down when idle.
+   - Alternatively, use **Serverless Compute** for simplicity.
+
+3. **For Deployment**:
+   - For **batch predictions**, use **Compute Clusters** or **Serverless Compute**.
+   - For **real-time predictions**, use **Kubernetes Clusters** or managed containers.
+
+---
+
+### **Creating and Using Compute Instances**
+- **What It Is**: A virtual machine for running notebooks.
+- **How to Create**:
+  ```python
+  from azure.ai.ml.entities import ComputeInstance
+
+  ci_basic = ComputeInstance(
+      name="basic-ci-12345",
+      size="STANDARD_DS3_v2"
+  )
+  ml_client.begin_create_or_update(ci_basic).result()
+  ```
+- **Assigning to a User**:
+  - A compute instance can only be assigned to one user at a time.
+  - You can start/stop the instance to save costs when not in use.
+  - You can also schedule it to shut down automatically after being idle.
+
+---
+
+### **Creating and Using Compute Clusters**
+- **What It Is**: A scalable group of virtual machines for running scripts.
+- **When to Use**: Ideal for production workloads or large-scale training.
+- **How to Create**:
+  - Use the Azure ML Studio, CLI, or Python SDK.
+
+---
+
+### **Summary**
+- **Compute Instances**: Best for experimentation and running notebooks.
+- **Compute Clusters**: Best for scalable, production-ready workloads.
+- **Kubernetes Clusters**: Best for real-time predictions and custom workloads.
+- **Serverless Compute**: Best for fully managed, on-demand tasks.
+
+
+
+WORK WITH ENVIRONMENTS IN AZURE MACHINE LEARNING 
+
+Understand environments
+
+In an enterprise machine learning solution, where experiments may be run in various compute contexts, 
+it can be important to be aware of the environments in which your experiment code is running. 
+You can use Azure Machine Learning environments to create environments and specify runtime configuration for an experiment.
+
+When you create an Azure Machine Learning workspace, curated environments are automatically created and 
+made available to you. Alternatively, you can create and manage your own custom environments and register 
+them in the workspace. Creating and registering custom environments makes it possible to define consistent, 
+reusable runtime contexts for your experiments - regardless of where the experiment script is run.
+
+What is an environment in Azure Machine Learning?
+Python code runs in the context of a virtual environment that defines the version of the Python runtime to be 
+used as well as the installed packages available to the code. In most Python installations, 
+packages are installed and managed in environments using conda or pip.
+
+To improve portability, you usually create environments in Docker containers that are in turn hosted on compute targets, 
+such as your development computer, virtual machines, or clusters in the cloud.
+
+
+Azure Machine Learning builds environment definitions into Docker images and conda environments. 
+When you use an environment, Azure Machine Learning builds the environment on the Azure Container registry 
+associated with the workspace.
+
+
+To view all available environments within the Azure Machine Learning workspace, 
+you can list the environments in the studio, using the Azure CLI, or the Python SDK.
+
+For example, to list the environments using the Python SDK:
+envs = ml_client.environments.list()
+for env in envs:
+    print(env.name)
+
+To review the details of a specific environment, you can retrieve an environment by its registered name:
+env = ml_client.environments.get(name="my-environment", version="1")
+print(env)
+
+
+EXPLORE AND USE CURATED ENVIRONMENT 
+Curated environments are prebuilt environments for the most common machine learning workloads, 
+available in your workspace by default.
+
+Curated environments use the prefix AzureML- and are designed to provide for scripts that use popular 
+machine learning frameworks and tooling.
+
+For example, there are curated environments for when you want to run a script that trains a 
+regression, clustering, or classification model with Scikit-Learn.
+
+To explore a curated environment, you can view it in the studio, using the Azure CLI, or the Python SDK.
+
+The following command allows you to retrieve the description and tags of a curated environment with the Python SDK:
+
+python 
+env = ml_client.environments.get("AzureML-sklearn-0.24-ubuntu18.04-py37-cpu", version=44)
+print(env. description, env.tags)
+
+
+Use a curated environment
+Most commonly, you use environments when you want to run a script as a (command) job.
+
+To specify which environment you want to use to run your script, you reference an environment by its name and version.
+
+For example, the following code shows how to configure a command job with the Python SDK, 
+which uses a curated environment including Scikit-Learn:
+
+from azure.ai.ml import command
+
+# configure job
+job = command(
+    code="./src",
+    command="python train.py",
+    environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest",
+    compute="aml-cluster",
+    display_name="train-with-curated-environment",
+    experiment_name="train-with-curated-environment"
+)
+
+# submit job
+returned_job = ml_client.create_or_update(job)
+
+
+Test and troubleshoot a curated environment
+As curated environments allow for faster deployment time, it's a best practice to first explore whether 
+one of the pre-created curated environments can be used to run your code.
+
+You can verify that a curated environment includes all necessary packages by reviewing its details. 
+Then, you can test by using the environment to run the script.
+
+If an environment doesn't include all necessary packages to run your code, your job fails.
+
+When a job fails, you can review the detailed error logs in the Outputs + logs tab of your job in the 
+Azure Machine Learning studio.
+
+A common error message that indicates your environment is incomplete, is ModuleNotFoundError. 
+The module that isn't found is listed in the error message. By reviewing the error message, 
+you can update the environment to include the libraries to ensure the necessary packages 
+are installed on the compute target before running the code.
+
+When you need to specify other necessary packages, you can use a curated environment as reference 
+for your own custom environments by modifying the Dockerfiles that back these curated environments.
+
+
+
+
+CREATE AND USE CUSTOM ENVIRONMENTS 
+
+When you need to create your own environment in Azure Machine Learning to list all 
+necessary packages, libraries, and dependencies to run your scripts, you can create custom environments.
+
+You can define an environment from a Docker image, a Docker build context, and a conda specification with Docker image.
+
+
+Create a custom environment from a Docker image
+The easiest approach is likely to be to create an environment from a Docker image. 
+Docker images can be hosted in a public registry like Docker Hub or privately stored in an Azure Container registry.
+
+Many open-source frameworks are encapsulated in public images to be found on Docker Hub. 
+For example, you can find a public Docker image that contains all necessary packages 
+to train a deep learning model with PyTorch.
+
+To create an environment from a Docker image, you can use the Python SDK:
+
+from azure.ai.ml.entities import Environment
+
+env_docker_image = Environment(
+    image="pytorch/pytorch:latest",
+    name="public-docker-image-example",
+    description="Environment created from a public Docker image.",
+)
+ml_client.environments.create_or_update(env_docker_image)
+
+You can also use the Azure Machine Learning base images to create an environment 
+(which are similar to the images used by curated environments):
+
+Python
+
+from azure.ai.ml.entities import Environment
+
+env_docker_image = Environment(
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    name="aml-docker-image-example",
+    description="Environment created from a Azure ML Docker image.",
+)
+ml_client.environments.create_or_update(env_docker_image)
+
+
+Create a custom environment with a conda specification file
+Though Docker images contain all necessary packages when working with a specific framework, 
+it may be that you need to include other packages to run your code.
+
+For example, you may want to train a model with PyTorch, and track the model with MLflow.
+
+When you need to include other packages or libraries in your environment, 
+you can add a conda specification file to a Docker image when creating the environment.
+
+A conda specification file is a YAML file, which lists the packages that need to be installed using conda or pip. 
+Such a YAML file may look like:
+
+name: basic-env-cpu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - scikit-learn
+  - pandas
+  - numpy
+  - matplotlib
+
+To create an environment from a base Docker image and a conda specification file, you can use the following code:
+from azure.ai.ml.entities import Environment
+
+env_docker_conda = Environment(
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    conda_file="./conda-env.yml",
+    name="docker-image-plus-conda-example",
+    description="Environment created from a Docker image plus Conda environment.",
+)
+ml_client.environments.create_or_update(env_docker_conda)
+
+
+
+Use an environment
+Most commonly, you use environments when you want to run a script as a (command) job.
+
+To specify which environment you want to use to run your script, 
+you reference an environment using the <curated-environment-name>:<version> or <curated-environment-name>@latest syntax.
+
+For example, the following code shows how to configure a command job with the Python SDK, 
+which uses a curated environment including Scikit-Learn:
+
+from azure.ai.ml import command
+
+# configure job
+job = command(
+    code="./src",
+    command="python train.py",
+    environment="docker-image-plus-conda-example:1",
+    compute="aml-cluster",
+    display_name="train-custom-env",
+    experiment_name="train-custom-env"
+)
+
+# submit job
+returned_job = ml_client.create_or_update(job)
+
+
+When you submit the job, the environment is built. The first time you use an environment, 
+it can take 10-15 minutes to build the environment. You can review the logs of the environment build in the logs of the job.
+
+When Azure Machine Learning builds a new environment, it's added to the list of custom environments in the workspace. 
+The image of the environment is hosted in the Azure Container registry associated to the workspace. 
+Whenever you use the same environment for another job (and another script), 
+
+the environment is ready to go and doesn't need to be build again.
+
+
+PLAIN ENGLISH 
+
+### Working with Environments in Azure Machine Learning (Plain English)
+
+In Azure Machine Learning, **environments** define the software and dependencies needed to run your machine learning code. They ensure your code runs consistently across different compute resources, such as virtual machines or clusters.
+
+---
+
+### **What is an Environment?**
+- An **environment** specifies:
+  - The Python version.
+  - Installed libraries and dependencies (e.g., Scikit-learn, PyTorch).
+- Environments are often created as **Docker containers**, which are portable and can run on any compute resource.
+
+---
+
+### **Types of Environments**
+1. **Curated Environments**:
+   - Prebuilt environments provided by Azure.
+   - Include popular machine learning frameworks like Scikit-learn or PyTorch.
+   - Named with the prefix `AzureML-` (e.g., `AzureML-sklearn-0.24-ubuntu18.04-py37-cpu`).
+   - Ideal for quick setup and common tasks.
+
+2. **Custom Environments**:
+   - Created by you to include specific libraries or configurations.
+   - Can be based on:
+     - A **Docker image** (e.g., from Docker Hub or Azure Container Registry).
+     - A **Conda specification file** (lists required Python packages).
+
+---
+
+### **Using Curated Environments**
+- **Why Use Them?**
+  - Faster setup since they are prebuilt.
+  - Suitable for most common machine learning tasks.
+
+- **How to Use Them?**
+  - Reference the environment by its name and version in your job configuration.
+  ```python
+  from azure.ai.ml import command
+
+  job = command(
+      code="./src",
+      command="python train.py",
+      environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest",
+      compute="aml-cluster",
+      display_name="train-with-curated-environment",
+      experiment_name="train-with-curated-environment"
+  )
+  ml_client.create_or_update(job)
+  ```
+
+- **Troubleshooting**:
+  - If a required library is missing, you’ll see an error like `ModuleNotFoundError`.
+  - You can modify the curated environment to include additional libraries.
+
+---
+
+### **Creating Custom Environments**
+- **Why Create Them?**
+  - When curated environments don’t meet your needs (e.g., missing libraries or specific configurations).
+
+- **How to Create Them?**
+  1. **From a Docker Image**:
+     - Use a public Docker image (e.g., from Docker Hub) or Azure’s base images.
+     ```python
+     from azure.ai.ml.entities import Environment
+
+     env = Environment(
+         image="pytorch/pytorch:latest",
+         name="custom-docker-env",
+         description="Environment created from a public Docker image."
+     )
+     ml_client.environments.create_or_update(env)
+     ```
+
+  2. **With a Conda Specification File**:
+     - Define a `conda-env.yml` file listing required packages.
+     ```yaml
+     name: custom-env
+     channels:
+       - conda-forge
+     dependencies:
+       - python=3.7
+       - scikit-learn
+       - pandas
+       - numpy
+     ```
+     - Combine it with a Docker image:
+     ```python
+     env = Environment(
+         image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+         conda_file="./conda-env.yml",
+         name="custom-conda-env",
+         description="Environment with Conda and Docker."
+     )
+     ml_client.environments.create_or_update(env)
+     ```
+
+---
+
+### **Using Environments in Jobs**
+- Specify the environment in your job configuration:
+  ```python
+  job = command(
+      code="./src",
+      command="python train.py",
+      environment="custom-conda-env:1",
+      compute="aml-cluster",
+      display_name="train-custom-env",
+      experiment_name="train-custom-env"
+  )
+  ml_client.create_or_update(job)
+  ```
+
+- **First-Time Use**:
+  - Building the environment may take 10-15 minutes.
+  - Once built, it’s cached for faster reuse.
+
+---
+
+### **Summary**
+- **Curated Environments**: Prebuilt, easy to use, great for common tasks.
+- **Custom Environments**: Fully customizable for specific needs.
+- **Reusable**: Once created, environments can be reused across jobs for consistency.
+
