@@ -1,0 +1,277 @@
+PLAN AND PREPARE TO DEVELOP AI SOLUTIONS ON AZURE
+
+
+WHAT IS AI ?? 
+### What is Artificial Intelligence (AI)? (Plain English)
+
+**Artificial Intelligence (AI)** refers to software capabilities that enable applications to perform tasks that mimic human-like behavior, such as reasoning, interpreting input, and generating responses or predictions. AI solutions are often built on **machine learning models** that analyze large amounts of data to identify patterns and relationships.
+
+---
+
+### Common AI Capabilities
+Here are some key AI capabilities that developers can integrate into applications:
+
+1. **Generative AI**:
+   - Creates original responses to natural language prompts.
+   - Example: Automatically generating property descriptions for real estate listings.
+
+2. **Agents**:
+   - Autonomous AI applications that respond to user input or take actions.
+   - Example: A virtual assistant that provides meeting details or books a taxi.
+
+3. **Computer Vision**:
+   - Processes and interprets visual input from images, videos, or live streams.
+   - Example: Identifying products in a shopping basket using a camera.
+
+4. **Speech**:
+   - Recognizes and synthesizes spoken language.
+   - Example: A digital assistant that answers questions through voice interaction.
+
+5. **Natural Language Processing (NLP)**:
+   - Analyzes and processes written or spoken language.
+   - Example: Translating social media messages and categorizing them by sentiment.
+
+6. **Information Extraction**:
+   - Extracts key details from documents, images, or recordings.
+   - Example: Extracting purchase details from a scanned receipt for expense processing.
+
+7. **Decision Support**:
+   - Uses historical data to make predictions that aid decision-making.
+   - Example: Predicting real estate trends based on demographic and economic data.
+
+---
+
+### Generative AI: A Closer Look
+**Generative AI** is a cutting-edge AI capability that uses **language models** to respond to natural language prompts. It enables conversational applications, content creation, and task automation.
+
+- **Language Models**:
+  - **Large Language Models (LLMs)**: Trained on massive datasets with millions of parameters, suitable for general-purpose tasks.
+  - **Small Language Models (SLMs)**: Optimized for specific scenarios with lower computational overhead.
+
+- **Multi-Modal Models**:
+  - Handle various types of input (e.g., text, images, speech) and generate diverse outputs (e.g., text, code, images).
+
+---
+
+### Summary
+AI enables applications to perform human-like tasks such as generating content, interpreting images, recognizing speech, and making predictions. **Generative AI**, powered by advanced language models, represents a significant leap forward, enabling conversational and creative applications that were previously unimaginable.
+
+
+AZURE AI SERVICES 
+### Azure AI Services (Plain English)
+
+Microsoft Azure provides a wide range of **AI services** that developers can use to build, deploy, and manage AI solutions. These services include prebuilt APIs and models that can be integrated into applications to add AI capabilities like computer vision, natural language processing, and generative AI.
+
+---
+
+### Commonly Used Azure AI Services
+
+1. **Azure OpenAI**:
+   - Provides access to OpenAI models like GPT (for text generation) and DALL-E (for image generation).
+   - Enables scalable and secure generative AI solutions.
+
+2. **Azure AI Vision**:
+   - Offers APIs for computer vision tasks like object detection, image captioning, and text extraction from images.
+
+3. **Azure AI Speech**:
+   - Provides text-to-speech, speech-to-text, speaker recognition, and translation capabilities.
+
+4. **Azure AI Language**:
+   - Enables natural language processing tasks like sentiment analysis, entity extraction, summarization, and building conversational models.
+
+5. **Azure AI Content Safety**:
+   - Detects and flags potentially offensive or risky content in text or images.
+
+6. **Azure AI Translator**:
+   - Translates text between multiple languages using advanced language models.
+
+7. **Azure AI Face**:
+   - Detects, analyzes, and recognizes human faces. Some features are restricted due to privacy concerns.
+
+8. **Azure AI Custom Vision**:
+   - Allows you to train and use custom models for image classification and object detection.
+
+9. **Azure AI Document Intelligence**:
+   - Extracts fields from complex documents like invoices, receipts, and forms using prebuilt or custom models.
+
+10. **Azure AI Content Understanding**:
+    - Analyzes multi-modal content (e.g., forms, images, videos) to extract structured data.
+
+11. **Azure AI Search**:
+    - Creates searchable indexes using AI skills and custom code, often used to ground generative AI prompts with relevant data.
+
+---
+
+### Provisioning Azure AI Services
+
+1. **Standalone Resources**:
+   - You can provision individual services like Azure AI Vision or Azure AI Language as standalone resources.
+   - Standalone resources often include a **free-tier SKU** for evaluation and development.
+
+2. **Multi-Service Resources**:
+   - Combine multiple services (e.g., OpenAI, Speech, Vision, Language) into a single resource for easier management.
+   - Useful for applications that require multiple AI capabilities.
+
+---
+
+### Key Considerations
+
+1. **Regional Availability**:
+   - Some services and models are available only in specific Azure regions. Check the **product availability table** for regional support.
+
+2. **Cost**:
+   - Azure AI services are charged based on usage. Use the **Azure pricing calculator** to estimate costs for your solution.
+
+3. **Resource Type**:
+   - When provisioning resources, ensure you select the latest **Azure AI services resource type** (icon: Azure AI services) to access the newest features.
+
+---
+
+### Summary
+Azure AI services provide a comprehensive set of tools for building AI-powered applications. Whether you need generative AI, computer vision, speech recognition, or natural language processing, Azure offers prebuilt APIs and models to simplify development. You can provision standalone or multi-service resources, depending on your application's needs, while considering regional availability and cost.
+
+AZURE AI FOUNDRY 
+### Azure AI Foundry (Plain English)
+
+**Azure AI Foundry** is a platform on Microsoft Azure designed to simplify and enhance the development of AI solutions. While you can use individual Azure AI services without it, Azure AI Foundry provides tools for better **project organization**, **resource management**, and **collaboration**, making it ideal for medium to large-scale AI projects.
+
+---
+
+### Key Features of Azure AI Foundry
+
+1. **Hubs and Projects**:
+   - **Hubs**:
+     - A hub is a top-level container for managing shared resources, data, and security configurations.
+     - A hub can support multiple projects and centralize access control and resource sharing.
+     - Resources created in a hub include:
+       - A **multi-service Azure AI resource** (e.g., OpenAI, Speech, Vision).
+       - A **Key Vault** for securely storing sensitive data like credentials.
+       - A **Storage Account** for data used in the hub and its projects.
+       - Optionally, an **Azure AI Search resource** for indexing data and grounding generative AI prompts.
+   - **Projects**:
+     - Projects are used to organize resources and assets for specific AI development efforts.
+     - Developers can collaborate within a project, sharing data, models, and endpoints.
+     - Projects inherit shared resources from the hub but can also have project-specific resources.
+
+2. **Development Tools**:
+   - **Model Catalog**: Access machine learning models from sources like Azure OpenAI and Hugging Face.
+   - **Playgrounds**: Test prompts with generative AI models.
+   - **Visual Studio Code Containers**: Hosted development environments for writing, testing, and deploying code.
+   - **Prompt Flow**: A tool to define the logic for generative AI applications.
+   - **Fine-Tuning**: Customize generative AI models with specific training prompts and responses.
+   - **Evaluation Tools**: Assess and improve AI applications with tracing, evaluations, and content safety management.
+
+3. **Connected Resources**:
+   - Shared resources (e.g., compute instances, storage) can be defined at the hub level and inherited by all projects in the hub.
+   - Project-specific resources can also be added for unique requirements.
+
+4. **Role-Based Access Control (RBAC)**:
+   - **Hub-Level Roles**:
+     - **Owner**: Full access to manage the hub and assign permissions.
+     - **Contributor**: Full access but cannot manage permissions.
+     - **Azure AI Developer**: Permissions to perform most actions except creating hubs or managing permissions.
+     - **Reader**: Read-only access.
+   - **Project-Level Roles**:
+     - Similar roles as the hub level but specific to individual projects.
+
+---
+
+### Considerations for Using Azure AI Foundry
+
+1. **Hub and Project Organization**:
+   - Use hubs to centralize shared resources for related projects (e.g., separate hubs for Marketing, HR, etc.).
+   - Add project-specific resources as needed.
+
+2. **Regional Availability**:
+   - Some Azure AI Foundry features may only be available in specific Azure regions. Check regional availability before planning your solution.
+
+3. **Costs and Quotas**:
+   - Costs include Azure AI services, storage, compute, and resources supporting hubs and projects.
+   - Quotas limit resource utilization (e.g., compute or AI model operations). You may need to request additional quotas for large-scale projects.
+
+---
+
+### Why Use Azure AI Foundry?
+- **Centralized Management**: Simplifies resource sharing and access control across multiple projects.
+- **Collaboration**: Enables teams to work together efficiently on AI development.
+- **Comprehensive Tools**: Provides tools for model development, testing, deployment, and evaluation.
+- **Scalability**: Supports large-scale AI projects with shared and project-specific resources.
+
+---
+
+### Summary
+Azure AI Foundry is a powerful platform for managing AI development on Azure. It provides centralized hubs for shared resources, project-specific tools for collaboration, and advanced features like prompt orchestration and model fine-tuning. By using Azure AI Foundry, organizations can streamline AI solution development, improve resource management, and enable efficient collaboration across teams.
+
+
+DEVELOPER TOOLS AND SDK 
+Developer tools and SDKs
+Completed
+100 XP
+5 minutes
+While you can perform many of the tasks needed to develop an AI solution directly in the Azure AI Foundry portal, developers also need to write, test, and deploy code.
+
+Development tools and environments
+There are many development tools and environments available, and developers should choose one that supports the languages, SDKs, and APIs they need to work with and with which they're most comfortable. For example, a developer who focuses strongly on building applications for Windows using the .NET Framework might prefer to work in an integrated development environment (IDE) like Microsoft Visual Studio. Conversely, a web application developer who works with a wide range of open-source languages and libraries might prefer to use a code editor like Visual Studio Code (VS Code). Both of these products are suitable for developing AI applications on Azure.
+
+The Azure AI Foundry VS Code container image
+As an alternative to installing and configuring your own development environment, within Azure AI Foundry portal, you can create compute and use it to host a container image for VS Code (installed locally or as a hosted web application in a browser). The benefit of using the container image is that it includes the latest versions of the SDK packages you're most likely to work with when building AI applications with Azure AI Foundry.
+
+GitHub and GitHub Copilot
+GitHub is the world's most popular platform for source control and DevOps management, and can be a critical element of any team development effort. Visual Studio and VS Code (including the Azure AI Foundry VS Code container image) both provide native integration with GitHub, and access to GitHub Copilot; an AI assistant that can significantly improve developer productivity and effectiveness.
+
+Programming languages, APIs, and SDKs
+You can develop AI applications using many common programming languages and frameworks, including Microsoft C#, Python, Node, TypeScript, Java, and others. When building AI solutions on Azure, some common SDKs you should plan to install and use include:
+
+The Azure AI Foundry SDK, which enables you to write code to connect to Azure AI Foundry projects and access resource connections, which you can then work with using service-specific SDKs.
+Azure AI Services SDKs - AI service-specific libraries for multiple programming languages and frameworks that enable you to consume Azure AI Services resources in your subscription. You can also use Azure AI Services through their REST APIs.
+The Azure AI Agent Service, which is accessed through the Azure AI Foundry SDK and can be integrated with frameworks like AutoGen and Semantic Kernel to build comprehensive AI agent solutions.
+The Prompt Flow SDK, which you can use to implement orchestration logic to manage prompt interactions with generative AI models.
+
+
+RESPONSIBLE AI 
+
+It's important for software engineers to consider the impact of their software on users, and society in general; including considerations for its responsible use. When the application is imbued with artificial intelligence, these considerations are particularly important due to the nature of how AI systems work and inform decisions; often based on probabilistic models, which are in turn dependent on the data with which they were trained.
+
+The human-like nature of AI solutions is a significant benefit in making applications user-friendly, but it can also lead users to place a great deal of trust in the application's ability to make correct decisions. The potential for harm to individuals or groups through incorrect predictions or misuse of AI capabilities is a major concern, and software engineers building AI-enabled solutions should apply due consideration to mitigate risks and ensure fairness, reliability, and adequate protection from harm or discrimination.
+
+Let's discuss some core principles for responsible AI that have been adopted at Microsoft.
+
+Fairness
+A diagram of scales.
+
+AI systems should treat all people fairly. For example, suppose you create a machine learning model to support a loan approval application for a bank. The model should make predictions of whether or not the loan should be approved without incorporating any bias based on gender, ethnicity, or other factors that might result in an unfair advantage or disadvantage to specific groups of applicants.
+
+Fairness of machine learned systems is a highly active area of ongoing research, and some software solutions exist for evaluating, quantifying, and mitigating unfairness in machine learned models. However, tooling alone isn't sufficient to ensure fairness. Consider fairness from the beginning of the application development process; carefully reviewing training data to ensure it's representative of all potentially affected subjects, and evaluating predictive performance for subsections of your user population throughout the development lifecycle.
+
+Reliability and safety
+A diagram of a shield.
+
+AI systems should perform reliably and safely. For example, consider an AI-based software system for an autonomous vehicle; or a machine learning model that diagnoses patient symptoms and recommends prescriptions. Unreliability in these kinds of system can result in substantial risk to human life.
+
+As with any software, AI-based software application development must be subjected to rigorous testing and deployment management processes to ensure that they work as expected before release. Additionally, software engineers need to take into account the probabilistic nature of machine learning models, and apply appropriate thresholds when evaluating confidence scores for predictions.
+
+Privacy and security
+A diagram of a padlock.
+
+AI systems should be secure and respect privacy. The machine learning models on which AI systems are based rely on large volumes of data, which may contain personal details that must be kept private. Even after models are trained and the system is in production, they use new data to make predictions or take action that may be subject to privacy or security concerns; so appropriate safeguards to protect data and customer content must be implemented.
+
+Inclusiveness
+A diagram of a diverse group of people.
+
+AI systems should empower everyone and engage people. AI should bring benefits to all parts of society, regardless of physical ability, gender, sexual orientation, ethnicity, or other factors.
+
+One way to optimize for inclusiveness is to ensure that the design, development, and testing of your application includes input from as diverse a group of people as possible.
+
+Transparency
+A diagram of an eye.
+
+AI systems should be understandable. Users should be made fully aware of the purpose of the system, how it works, and what limitations may be expected.
+
+For example, when an AI system is based on a machine learning model, you should generally make users aware of factors that may affect the accuracy of its predictions, such as the number of cases used to train the model, or the specific features that have the most influence over its predictions. You should also share information about the confidence score for predictions.
+
+When an AI application relies on personal data, such as a facial recognition system that takes images of people to recognize them; you should make it clear to the user how their data is used and retained, and who has access to it.
+
+Accountability
+A diagram of a handshake.
+
+People should be accountable for AI systems. Although many AI systems seem to operate autonomously, ultimately it's the responsibility of the developers who trained and validated the models they use, and defined the logic that bases decisions on model predictions to ensure that the overall system meets responsibility requirements. To help meet this goal, designers and developers of AI-based solution should work within a framework of governance and organizational principles that ensure the solution meets responsible and legal standards that are clearly defined.

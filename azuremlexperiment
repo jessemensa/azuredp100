@@ -316,3 +316,310 @@ Custom logging gives you more flexibility, but also creates more work as you'll 
 define any parameter, metric, or artifact you want to log.
 
 When the job has completed, you can review all logged metrics in the studio.
+
+
+RESPONSIBLE AI 
+
+### Understanding Responsible AI (Plain English)
+
+When using machine learning models to make decisions—such as predicting loan eligibility or evaluating job candidates—it’s crucial to ensure that the models are **fair, transparent, and accountable**. This is where **Responsible AI** principles come into play. These principles help ensure that AI systems are ethical, unbiased, and trustworthy.
+
+---
+
+### Microsoft’s Five Responsible AI Principles:
+
+1. **Fairness and Inclusiveness**:
+   - Models should treat everyone fairly and avoid bias.
+   - Similar groups should not be treated differently without justification.
+   - Example: A loan approval model should not discriminate based on gender or ethnicity.
+
+2. **Reliability and Safety**:
+   - Models should be consistent, reliable, and safe to use.
+   - They should handle unexpected situations gracefully and resist harmful manipulation.
+   - Example: A self-driving car model should operate safely in all conditions, even in rare or unexpected scenarios.
+
+3. **Privacy and Security**:
+   - Be transparent about how data is collected, used, and stored.
+   - Protect individuals' privacy and ensure their data is secure.
+   - Example: A healthcare model should safeguard patient data and comply with privacy regulations.
+
+4. **Transparency**:
+   - People should understand how models make decisions, especially when those decisions affect their lives.
+   - Example: A hiring model should provide clear explanations for why a candidate was or wasn’t selected.
+
+5. **Accountability**:
+   - Humans should remain in control and take responsibility for decisions influenced by AI.
+   - Example: A credit approval system should allow human oversight to review and override decisions if necessary.
+
+---
+
+### Why Are These Principles Important?
+- **Ethical AI**: Ensures that AI systems are used responsibly and do not harm individuals or groups.
+- **Trust**: Builds confidence in AI systems by making them fair, transparent, and accountable.
+- **Compliance**: Helps organizations meet legal and ethical standards for AI use.
+
+---
+
+### Summary:
+Responsible AI ensures that machine learning models are ethical, unbiased, and trustworthy. By following principles like fairness, reliability, privacy, transparency, and accountability, you can create AI systems that positively impact society while minimizing risks.
+
+
+CREATE RESPONSIBLE AI DASHBOARD 
+
+### Creating the Responsible AI Dashboard (Plain English)
+
+The **Responsible AI (RAI) dashboard** in Azure Machine Learning helps you evaluate whether your machine learning model is **safe, trustworthy, and ethical**. It provides insights into your model's behavior and allows you to share these insights with others through an interactive dashboard or a PDF scorecard.
+
+---
+
+### What Is the Responsible AI Dashboard?
+- A tool that gathers insights about your model to ensure it aligns with **Responsible AI principles**.
+- It helps you evaluate your model's fairness, reliability, transparency, and accountability.
+- Insights are presented in an **interactive dashboard** for exploration or as a **scorecard** for sharing.
+
+---
+
+### How to Create the Responsible AI Dashboard
+To create the dashboard, you need to build a **pipeline** using Azure Machine Learning's built-in components. The pipeline should:
+1. **Start** with the **RAI Insights dashboard constructor**.
+2. **Include** one or more RAI tool components (e.g., explanations, causal analysis, error analysis).
+3. **End** with the **Gather RAI Insights dashboard** component to combine all insights into one dashboard.
+4. Optionally, add the **Gather RAI Insights scorecard** component to generate a PDF summary.
+
+---
+
+### Available RAI Tool Components
+1. **Add Explanation**:
+   - Generates explanations to show how much each feature influences the model's predictions.
+   - Helps interpret the model's decision-making process.
+
+2. **Add Causal Analysis**:
+   - Uses historical data to analyze the causal effects of features on outcomes.
+   - Helps identify which features have the most significant impact.
+
+3. **Add Counterfactuals**:
+   - Explores how changing input values would change the model's output.
+   - Useful for understanding "what-if" scenarios.
+
+4. **Add Error Analysis**:
+   - Identifies erroneous subgroups in your data and explores the distribution of errors.
+   - Helps improve model performance by addressing specific issues.
+
+---
+
+### Steps to Build and Run the Pipeline
+1. **Register Datasets**:
+   - Register your training and test datasets as **MLTable data assets** in Azure Machine Learning.
+
+2. **Register the Model**:
+   - Ensure the model you want to evaluate is registered in the Azure Machine Learning workspace.
+
+3. **Retrieve Components**:
+   - Use the built-in RAI components (e.g., Explanation, Causal Analysis) to include in your pipeline.
+
+4. **Build the Pipeline**:
+   - Start with the **RAI Insights dashboard constructor**.
+   - Add the desired RAI tool components.
+   - End with the **Gather RAI Insights dashboard** component.
+
+5. **Run the Pipeline**:
+   - Execute the pipeline to generate the Responsible AI dashboard and scorecard.
+
+---
+
+### Ways to Create the Dashboard
+You can create the Responsible AI dashboard using:
+1. **Command Line Interface (CLI)**: For users comfortable with command-line tools.
+2. **Python SDK**: For programmatic control and customization.
+3. **Azure Machine Learning Studio**: A no-code, user-friendly interface.
+
+---
+
+### Summary
+The Responsible AI dashboard helps you evaluate your model's fairness, reliability, and transparency. By building a pipeline with RAI components, you can generate insights into your model's behavior and ensure it aligns with ethical AI principles. The dashboard and scorecard make it easy to share these insights with stakeholders.
+
+Python 
+rai_constructor_component = ml_client_registry.components.get(
+    name="microsoft_azureml_rai_tabular_insight_constructor", label="latest"
+)
+
+Then, you can add any of the available insights, like the explanations, by retrieving the Add Explanation to RAI Insights dashboard component:
+
+rai_explanation_component = ml_client_registry.components.get(
+    name="microsoft_azureml_rai_tabular_explanation", label="latest"
+)
+
+
+And finally, your pipeline should end with a Gather RAI Insights dashboard component:
+
+rai_gather_component = ml_client_registry.components.get(
+    name="microsoft_azureml_rai_tabular_insight_gather", label="latest"
+)
+
+
+
+Once you have the components, you can build the pipeline:
+
+from azure.ai.ml import Input, dsl
+from azure.ai.ml.constants import AssetTypes
+
+@dsl.pipeline(
+    compute="aml-cluster",
+    experiment_name="Create RAI Dashboard",
+)
+def rai_decision_pipeline(
+    target_column_name, train_data, test_data
+):
+    # Initiate the RAIInsights
+    create_rai_job = rai_constructor_component(
+        title="RAI dashboard diabetes",
+        task_type="classification",
+        model_info=expected_model_id,
+        model_input=Input(type=AssetTypes.MLFLOW_MODEL, path=azureml_model_id),
+        train_dataset=train_data,
+        test_dataset=test_data,
+        target_column_name="Predictions",
+    )
+    create_rai_job.set_limits(timeout=30)
+
+    # Add explanations
+    explanation_job = rai_explanation_component(
+        rai_insights_dashboard=create_rai_job.outputs.rai_insights_dashboard,
+        comment="add explanation", 
+    )
+    explanation_job.set_limits(timeout=10)
+
+    # Combine everything
+    rai_gather_job = rai_gather_component(
+        constructor=create_rai_job.outputs.rai_insights_dashboard,
+        insight=explanation_job.outputs.explanation,
+    )
+    rai_gather_job.set_limits(timeout=10)
+
+    rai_gather_job.outputs.dashboard.mode = "upload"
+
+    return {
+        "dashboard": rai_gather_job.outputs.dashboard,
+    }
+
+### Explanation of the Code in Plain English
+
+This code defines a **pipeline** in Azure Machine Learning to create a **Responsible AI (RAI) dashboard**. The pipeline gathers insights about a machine learning model, such as explanations of predictions, and combines them into an interactive dashboard.
+
+---
+
+### Step-by-Step Explanation:
+
+1. **Import Required Libraries**:
+   - `Input` and `dsl`: Used to define the pipeline and its components.
+   - `AssetTypes`: Specifies the type of assets (e.g., MLflow models, datasets) used in the pipeline.
+
+2. **Define the Pipeline**:
+   - The `@dsl.pipeline` decorator defines a pipeline named `rai_decision_pipeline`.
+   - The pipeline runs on the compute cluster `"aml-cluster"` and is part of the experiment `"Create RAI Dashboard"`.
+
+3. **Pipeline Inputs**:
+   - The pipeline accepts three inputs:
+     - `target_column_name`: The name of the column containing the target variable (e.g., predictions).
+     - `train_data`: The training dataset.
+     - `test_data`: The test dataset.
+
+4. **Step 1: Create the RAI Insights Dashboard**:
+   - The `rai_constructor_component` initializes the RAI dashboard.
+   - Key parameters:
+     - **`title`**: The title of the dashboard (e.g., `"RAI dashboard diabetes"`).
+     - **`task_type`**: Specifies the type of task (e.g., `"classification"`).
+     - **`model_input`**: Points to the registered MLflow model.
+     - **`train_dataset` and `test_dataset`**: The training and test datasets.
+     - **`target_column_name`**: Specifies the column containing the model's predictions.
+   - The `set_limits(timeout=30)` method sets a timeout of 30 minutes for this step.
+
+5. **Step 2: Add Explanations**:
+   - The `rai_explanation_component` generates explanations for the model's predictions.
+   - Key parameters:
+     - **`rai_insights_dashboard`**: Links this step to the RAI dashboard created in Step 1.
+     - **`comment`**: Adds a comment (e.g., `"add explanation"`).
+   - The `set_limits(timeout=10)` method sets a timeout of 10 minutes for this step.
+
+6. **Step 3: Combine Insights into the Dashboard**:
+   - The `rai_gather_component` combines the RAI dashboard and the generated explanations into a single dashboard.
+   - Key parameters:
+     - **`constructor`**: Links to the RAI dashboard created in Step 1.
+     - **`insight`**: Links to the explanations generated in Step 2.
+   - The `set_limits(timeout=10)` method sets a timeout of 10 minutes for this step.
+   - The `rai_gather_job.outputs.dashboard.mode = "upload"` ensures the dashboard is uploaded to Azure Machine Learning.
+
+7. **Pipeline Output**:
+   - The pipeline returns the final **dashboard** as its output, which can be explored interactively.
+
+---
+
+### What Does This Pipeline Do?
+- It creates a **Responsible AI dashboard** for a classification model.
+- The dashboard includes insights such as explanations of predictions.
+- The pipeline combines these insights into a single interactive dashboard that can be uploaded and explored in Azure Machine Learning.
+
+---
+
+### Why Use This Pipeline?
+- **Automation**: Automates the creation of a Responsible AI dashboard.
+- **Transparency**: Provides insights into how the model makes predictions.
+- **Compliance**: Helps ensure the model aligns with Responsible AI principles like fairness and accountability.
+
+In short, this pipeline simplifies the process of generating and exploring Responsible AI insights for a machine learning model.
+
+
+EVALUATE RESPONSIBLE AI DASHBOARD 
+### Evaluating the Responsible AI Dashboard (Plain English)
+
+The **Responsible AI (RAI) dashboard** in Azure Machine Learning helps you evaluate your machine learning model by providing insights into its behavior. Once the dashboard is generated, you can explore its contents in the Azure Machine Learning studio to better understand and improve your model.
+
+---
+
+### How to Access the Dashboard
+- Open the Responsible AI dashboard in the Azure Machine Learning studio.
+- The studio automatically connects the dashboard to a compute instance, enabling interactive exploration.
+
+---
+
+### Insights Available in the Dashboard
+The dashboard reflects the outputs of the components you included in the pipeline. These insights may include:
+
+1. **Error Analysis**:
+   - Helps you understand how errors are distributed in your dataset.
+   - **Visuals**:
+     - **Error Tree Map**: Shows combinations of subgroups where the model makes more false predictions.
+     - **Error Heat Map**: Displays a grid overview of errors across one or two features.
+
+2. **Explanations**:
+   - Explains how the model makes predictions by calculating **feature importance**.
+   - **Types of Feature Importance**:
+     - **Aggregate Feature Importance**: Shows how each feature influences predictions across the entire dataset.
+     - **Individual Feature Importance**: Explains how each feature impacts a specific prediction.
+
+3. **Counterfactuals**:
+   - Explores "what-if" scenarios to see how changes in input features would affect the model's predictions.
+   - **Example**: Select a data point and specify a desired prediction to see what input changes would lead to that outcome.
+
+4. **Causal Analysis**:
+   - Estimates the causal effects of features on predictions to improve decision-making.
+   - **Tabs in the Dashboard**:
+     - **Aggregate Causal Effects**: Shows the average effect of changing specific features on predictions.
+     - **Individual Causal Effects**: Allows you to explore how changing features for individual data points affects predictions.
+     - **Treatment Policy**: Identifies which data points benefit most from specific changes to features.
+
+---
+
+### Why Use the Responsible AI Dashboard?
+1. **Error Analysis**: Identifies subgroups where the model performs poorly, helping you target improvements.
+2. **Explanations**: Provides transparency into how the model makes decisions, building trust and interpretability.
+3. **Counterfactuals**: Helps you explore alternative scenarios to understand how predictions can change.
+4. **Causal Analysis**: Offers actionable insights into how feature changes can optimize outcomes.
+
+---
+
+### Summary
+The Responsible AI dashboard provides a comprehensive view of your model's behavior, helping you evaluate its fairness, reliability, and transparency. By exploring insights like error analysis, explanations, counterfactuals, and causal analysis, you can better understand your model and make informed decisions to improve its performance and alignment with Responsible AI principles.
+
+
+

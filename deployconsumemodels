@@ -1,0 +1,753 @@
+### Deploying and Consuming a Model with Online Endpoints (Plain English)
+
+When you train a machine learning model, the next step is to **deploy** it so it can be used to make predictions on new data. For example, if you trained a model to recommend restaurants, you want your application to use the model to suggest restaurants in real-time based on user interactions.
+
+---
+
+### What Does "Consuming a Model" Mean?
+- **Consuming a model** means using the trained model to make predictions on new, unseen data.
+- In this case, the application sends a request to the model with input data (e.g., a selected restaurant) and receives a prediction (e.g., recommended restaurants).
+
+---
+
+### How to Deploy a Model for Real-Time Predictions
+To enable real-time predictions, you need to deploy the model to a service that can handle **instant requests**. In Azure Machine Learning, this is done using **online endpoints**.
+
+---
+
+### What Are Online Endpoints?
+- **Online endpoints** are services in Azure Machine Learning that allow applications to send requests to a deployed model and receive predictions in real-time.
+- They are ideal for scenarios where you need instant responses, such as recommending restaurants or detecting fraud.
+
+---
+
+### How It Works:
+1. **Train and Track the Model**:
+   - Train your model in Azure Machine Learning and track it in the workspace.
+
+2. **Deploy the Model**:
+   - Deploy the model to an **online endpoint**. This makes the model accessible via an API.
+
+3. **Application Integration**:
+   - Your application sends input data (e.g., a selected restaurant) to the online endpoint.
+   - The endpoint processes the request and returns predictions (e.g., recommended restaurants).
+
+---
+
+### Why Use Online Endpoints?
+- **Real-Time Predictions**: Provides instant responses for individual or small sets of data points.
+- **Scalability**: Can handle multiple requests from users simultaneously.
+- **Ease of Integration**: Applications can easily interact with the endpoint using standard API calls.
+
+---
+
+### Summary
+By deploying your model to an **online endpoint** in Azure Machine Learning, you enable your application to make real-time predictions. This improves the user experience by providing instant, personalized recommendations or insights based on the model's predictions.
+
+
+
+
+EXPLORE MANAGED ONLINE ENDPOINTS 
+
+### Exploring Managed Online Endpoints (Plain English)
+
+Managed online endpoints in Azure Machine Learning allow you to deploy machine learning models for **real-time predictions**. These endpoints provide an HTTPS interface where applications can send data and receive predictions almost instantly.
+
+---
+
+### Real-Time Predictions
+- **How It Works**:
+  - Applications send input data to the endpoint.
+  - The endpoint uses a **scoring script** to load the trained model and predict the label for the input data (this process is called **inferencing**).
+  - The predicted label is returned as part of the response.
+
+---
+
+### Types of Online Endpoints
+1. **Managed Online Endpoints**:
+   - Azure Machine Learning handles all the infrastructure (e.g., provisioning compute, scaling, OS updates).
+   - Ideal for testing and deploying models without worrying about infrastructure management.
+
+2. **Kubernetes Online Endpoints**:
+   - Users manage the Kubernetes cluster that provides the infrastructure.
+   - Suitable for advanced use cases requiring more control and scalability, often managed by IT or DevOps teams.
+
+---
+
+### Why Use Managed Online Endpoints?
+- **Ease of Use**: You only need to specify the virtual machine (VM) type and scaling settings.
+- **Automation**: Azure handles everything else, including compute provisioning and OS updates.
+- **Testing**: Great for testing whether your model works as expected when deployed.
+
+---
+
+### Deploying a Model to a Managed Online Endpoint
+To deploy a model, you need to define the following:
+1. **Model Assets**:
+   - The trained model file (e.g., a pickle file) or a registered model in Azure Machine Learning.
+
+2. **Scoring Script**:
+   - A script that loads the model and processes input data to generate predictions.
+   - **Note**: For MLflow models, the scoring script is automatically generated.
+
+3. **Environment**:
+   - Specifies the dependencies (e.g., Python packages) required to run the model.
+
+4. **Compute Configuration**:
+   - Defines the compute size and scaling settings to handle the expected traffic.
+
+---
+
+### Blue/Green Deployment
+- **What It Is**:
+  - A strategy to deploy multiple versions of a model to the same endpoint.
+  - Allows you to test new versions of a model without disrupting the service.
+
+- **How It Works**:
+  1. Deploy the first version of the model as the **blue deployment**.
+  2. Retrain the model with new data and deploy the updated version as the **green deployment**.
+  3. Split traffic between the two deployments (e.g., 90% to blue, 10% to green) to test the new version.
+  4. If the new version performs well, transition more traffic to the green deployment.
+  5. If the new version underperforms, roll back to the blue deployment.
+
+- **Benefits**:
+  - Seamless testing of new models without interrupting service.
+  - Easy rollback to the previous version if needed.
+
+---
+
+### Summary
+Managed online endpoints in Azure Machine Learning provide a simple and scalable way to deploy models for real-time predictions. They handle infrastructure management, making it easy for data scientists to focus on testing and deploying models. Features like **blue/green deployment** allow you to test and transition between model versions seamlessly, ensuring a smooth user experience.
+
+
+CREATE AN ENDPOINT 
+
+### Creating an Online Endpoint (Plain English)
+
+To deploy a machine learning model for real-time predictions in Azure Machine Learning, you first need to create an **online endpoint**. This endpoint acts as an HTTPS interface where applications can send data and receive predictions.
+
+---
+
+### What Is Needed to Create an Endpoint?
+To create an endpoint, you use the **`ManagedOnlineEndpoint`** class, which requires the following parameters:
+
+1. **`name`**:
+   - The name of the endpoint.
+   - Must be unique within the Azure region to avoid conflicts.
+
+2. **`auth_mode`**:
+   - Specifies the authentication method for accessing the endpoint.
+   - Options:
+     - **`key`**: Uses key-based authentication (a secure key is required to access the endpoint).
+     - **`aml_token`**: Uses Azure Machine Learning token-based authentication.
+
+---
+
+### How to Create an Endpoint
+You use the `ManagedOnlineEndpoint` class to define the endpoint and then deploy it using Azure Machine Learning. Once created, the endpoint is ready to receive requests and return predictions.
+
+---
+
+### Why Use an Online Endpoint?
+- **Real-Time Predictions**: Enables applications to send data and get instant predictions.
+- **Secure Access**: Authentication ensures only authorized users can access the endpoint.
+- **Scalability**: Azure handles the infrastructure, making it easy to scale as needed.
+
+from azure.ai.ml.entities import ManagedOnlineEndpoint
+
+# create an online endpoint
+endpoint = ManagedOnlineEndpoint(
+    name="endpoint-example",
+    description="Online endpoint",
+    auth_mode="key",
+)
+
+ml_client.begin_create_or_update(endpoint).result()
+
+### Explanation of the Code in Plain English
+
+This code demonstrates how to create an **online endpoint** in Azure Machine Learning using the `ManagedOnlineEndpoint` class. The endpoint serves as an HTTPS interface for real-time predictions.
+
+---
+
+### Step-by-Step Explanation:
+
+1. **Import the Required Class**:
+   - `ManagedOnlineEndpoint` is imported from `azure.ai.ml.entities`. This class is used to define the online endpoint.
+
+2. **Define the Endpoint**:
+   - An instance of `ManagedOnlineEndpoint` is created with the following parameters:
+     - **`name="endpoint-example"`**:
+       - Specifies the name of the endpoint. It must be unique within the Azure region.
+     - **`description="Online endpoint"`**:
+       - Provides a brief description of the endpoint.
+     - **`auth_mode="key"`**:
+       - Sets the authentication mode to **key-based authentication**, meaning a secure key will be required to access the endpoint.
+
+3. **Create the Endpoint**:
+   - The `ml_client.begin_create_or_update(endpoint).result()` command:
+     - Submits the endpoint definition to Azure Machine Learning.
+     - Creates or updates the endpoint in the Azure workspace.
+     - The `.result()` ensures the operation completes before proceeding.
+
+---
+
+### What Does This Code Do?
+- It creates an **online endpoint** in Azure Machine Learning.
+- The endpoint is ready to receive requests for real-time predictions once a model is deployed to it.
+
+---
+
+### Why Use This Approach?
+- **Real-Time Predictions**: Enables applications to send data and get instant predictions.
+- **Ease of Use**: Azure manages the underlying infrastructure, so you only need to define the endpoint.
+- **Secure Access**: Key-based authentication ensures only authorized users can access the endpoint.
+
+In short, this code sets up an online endpoint, which is the first step in deploying a model for real-time use in applications.
+
+
+DEPLOY YOUR ML FLOW MODEL TO A MANAGED ONLINE ENDPOINT 
+
+### Deploying an MLflow Model to a Managed Online Endpoint (Plain English)
+
+Deploying an **MLflow model** to a managed online endpoint in Azure Machine Learning is a simple and efficient way to make your model available for real-time predictions. Azure Machine Learning automatically generates the **scoring script** and **environment** for MLflow models, reducing the effort required for deployment.
+
+---
+
+### What Is Needed to Deploy an MLflow Model?
+1. **Model Files**:
+   - The model files must be stored locally or registered in Azure Machine Learning.
+   - The folder containing the model must include the **MLmodel file**, which describes how the model can be loaded and used.
+
+2. **Compute Configuration**:
+   - **`instance_type`**: Specifies the size of the virtual machine (VM) to use for deployment.
+   - **`instance_count`**: Specifies the number of VM instances to use for handling requests.
+
+---
+
+### How to Deploy an MLflow Model
+1. **Prepare the Model**:
+   - Ensure the model files are stored locally (e.g., in a folder called `model`) or registered in Azure Machine Learning.
+   - The folder must include the **MLmodel file**.
+
+2. **Create an Endpoint**:
+   - Before deploying the model, you need to create an online endpoint using the `ManagedOnlineEndpoint` class.
+
+3. **Deploy the Model**:
+   - Use Azure Machine Learning to deploy the model to the endpoint.
+   - During deployment, specify the **compute configuration** (e.g., VM size and instance count).
+
+---
+
+### Why Use MLflow Models for Deployment?
+- **Simplified Deployment**:
+  - No need to manually create a scoring script or define the environment.
+  - Azure Machine Learning handles these automatically for MLflow models.
+
+- **Real-Time Predictions**:
+  - The deployed model can handle requests and return predictions almost instantly.
+
+- **Scalability**:
+  - You can adjust the compute configuration (e.g., VM size and instance count) to handle varying levels of traffic.
+
+---
+
+### Summary
+Deploying an MLflow model to a managed online endpoint is a straightforward process. By leveraging Azure Machine Learning's automatic generation of scoring scripts and environments, you can focus on delivering real-time predictions without worrying about the underlying infrastructure.
+
+from azure.ai.ml.entities import Model, ManagedOnlineDeployment
+from azure.ai.ml.constants import AssetTypes
+
+# create a blue deployment
+model = Model(
+    path="./model",
+    type=AssetTypes.MLFLOW_MODEL,
+    description="my sample mlflow model",
+)
+
+blue_deployment = ManagedOnlineDeployment(
+    name="blue",
+    endpoint_name="endpoint-example",
+    model=model,
+    instance_type="Standard_F4s_v2",
+    instance_count=1,
+)
+
+ml_client.online_deployments.begin_create_or_update(blue_deployment).result()
+
+
+Since only one model is deployed to the endpoint, you want this model to take 100% of the traffic. When you deploy multiple models to the same endpoint, you can distribute the traffic among the deployed models.
+
+To route traffic to a specific deployment, use the following code:
+
+# blue deployment takes 100 traffic
+endpoint.traffic = {"blue": 100}
+ml_client.begin_create_or_update(endpoint).result()
+
+To delete the endpoint and all associated deployments, run the command:
+
+ml_client.online_endpoints.begin_delete(name="endpoint-example")
+
+
+DEPLOY A MODEL TO A MANAGED ONLINE ENDPOINT 
+### Deploying a Model to a Managed Online Endpoint Without MLflow (Plain English)
+
+If you're not using the MLflow model format, you can still deploy a model to a **managed online endpoint** in Azure Machine Learning. However, in this case, you need to manually provide a **scoring script** and define the **execution environment** required for inferencing.
+
+---
+
+### What Is Needed to Deploy a Model?
+1. **Model Files**:
+   - The trained model must be stored locally or registered in Azure Machine Learning.
+
+2. **Scoring Script**:
+   - A Python script that defines how the model is loaded and how predictions are generated.
+
+3. **Execution Environment**:
+   - Specifies the dependencies (e.g., Python libraries) required to run the model.
+
+---
+
+### Scoring Script
+The scoring script must include two key functions:
+
+1. **`init()`**:
+   - Called when the deployment is created or updated.
+   - Loads and caches the model from the model registry or local storage.
+   - Example: Load the model into memory for reuse during predictions.
+
+2. **`run(data)`**:
+   - Called every time the endpoint is invoked.
+   - Processes the input data and generates predictions.
+   - Example: Accepts input data (e.g., JSON), runs the model, and returns predictions.
+
+---
+
+### How It Works
+1. **Initialization**:
+   - The `init()` function is executed when the endpoint is deployed or updated.
+   - The model is loaded and prepared for inferencing.
+
+2. **Prediction**:
+   - Each time the endpoint is called, the `run()` function is executed.
+   - The input data is passed to the model, and predictions are returned.
+
+---
+
+### Why Use This Approach?
+- **Flexibility**: Allows you to deploy models in custom formats or frameworks not supported by MLflow.
+- **Control**: You can define exactly how the model is loaded and how predictions are generated.
+
+---
+
+### Summary
+Deploying a model without MLflow requires you to manually create a **scoring script** and define the **execution environment**. The scoring script ensures the model is loaded during initialization and generates predictions when the endpoint is invoked. This approach provides flexibility for deploying models in custom formats or frameworks.
+
+
+import json
+import joblib
+import numpy as np
+import os
+
+# called when the deployment is created or updated
+def init():
+    global model
+    # get the path to the registered model file and load it
+    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'model.pkl')
+    model = joblib.load(model_path)
+
+# called when a request is received
+def run(raw_data):
+    # get the input data as a numpy array
+    data = np.array(json.loads(raw_data)['data'])
+    # get a prediction from the model
+    predictions = model.predict(data)
+    # return the predictions as any JSON serializable format
+    return predictions.tolist()
+
+
+Create an environment
+Your deployment requires an execution environment in which to run the scoring script.
+
+You can create an environment with a Docker image with Conda dependencies, or with a Dockerfile.
+
+To create an environment using a base Docker image, you can define the Conda dependencies in a conda.yml file:
+
+name: basic-env-cpu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - scikit-learn
+  - pandas
+  - numpy
+  - matplotlib
+
+
+Then, to create the environment, run the following code:
+from azure.ai.ml.entities import Environment
+
+env = Environment(
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    conda_file="./src/conda.yml",
+    name="deployment-environment",
+    description="Environment created from a Docker image plus Conda environment.",
+)
+ml_client.environments.create_or_update(env)
+
+
+
+Create the deployment
+When you have your model files, scoring script, and environment, you can create the deployment.
+
+To deploy a model to an endpoint, you can specify the compute configuration with two parameters:
+
+instance_type: Virtual machine (VM) size to use. Review the list of supported sizes.
+instance_count: Number of instances to use.
+To deploy the model, use the ManagedOnlineDeployment class and run the following command:
+
+from azure.ai.ml.entities import ManagedOnlineDeployment, CodeConfiguration
+
+model = Model(path="./model",
+
+blue_deployment = ManagedOnlineDeployment(
+    name="blue",
+    endpoint_name="endpoint-example",
+    model=model,
+    environment="deployment-environment",
+    code_configuration=CodeConfiguration(
+        code="./src", scoring_script="score.py"
+    ),
+    instance_type="Standard_DS2_v2",
+    instance_count=1,
+)
+
+ml_client.online_deployments.begin_create_or_update(blue_deployment).result()
+
+You can deploy multiple models to an endpoint. To route traffic to a specific deployment, use the following code:
+
+# blue deployment takes 100 traffic
+endpoint.traffic = {"blue": 100}
+ml_client.begin_create_or_update(endpoint).result()
+
+To delete the endpoint and all associated deployments, run the command:
+ml_client.online_endpoints.begin_delete(name="endpoint-example")
+
+
+TEST MANAGED ONLINE END POINT 
+Test managed online endpoints
+Completed
+100 XP
+5 minutes
+After deploying a real-time service, you can consume it from client applications to predict labels for new data cases.
+
+Use the Azure Machine Learning studio
+You can list all endpoints in the Azure Machine Learning studio, by navigating to the Endpoints page. In the Real-time endpoints tab, all endpoints are shown.
+
+You can select an endpoint to review its details and deployment logs.
+
+Additionally, you can use the studio to test the endpoint.
+
+
+Use the Azure Machine Learning Python SDK
+For testing, you can also use the Azure Machine Learning Python SDK to invoke an endpoint.
+
+Typically, you send data to deployed model in JSON format with the following structure:
+
+{
+  "data":[
+      [0.1,2.3,4.1,2.0], // 1st case
+      [0.2,1.8,3.9,2.1],  // 2nd case,
+      ...
+  ]
+}
+
+The response from the deployed model is a JSON collection with a prediction for each case that was submitted in the data. The following code sample invokes an endpoint and displays the response:
+
+# test the blue deployment with some sample data
+response = ml_client.online_endpoints.invoke(
+    endpoint_name=online_endpoint_name,
+    deployment_name="blue",
+    request_file="sample-data.json",
+)
+
+if response[1]=='1':
+    print("Yes")
+else:
+    print ("No")
+
+
+UNDERSTAND AND CREATE BATCH ENDPOINTS 
+### Understanding and Creating Batch Endpoints (Plain English)
+
+Batch endpoints in Azure Machine Learning allow you to generate **batch predictions** for large datasets asynchronously. Unlike online endpoints, which provide real-time predictions, batch endpoints are designed for processing multiple inputs at once, making them ideal for scenarios where predictions are not needed instantly.
+
+---
+
+### What Are Batch Predictions?
+- **Batch predictions** involve scoring multiple data points at once.
+- A **batch endpoint** is an HTTPS endpoint that triggers a **batch scoring job** when invoked.
+- The scoring job processes the input data and stores the results in a connected datastore.
+
+---
+
+### Why Use Batch Endpoints?
+- **Integration**: Batch endpoints can be triggered by other services like **Azure Synapse Analytics** or **Azure Databricks**, allowing seamless integration with data pipelines.
+- **Scalability**: Batch scoring jobs typically use a compute cluster, enabling efficient processing of large datasets.
+- **Asynchronous Processing**: Predictions are generated in the background, and results are stored for later retrieval.
+
+---
+
+### How It Works:
+1. **Trigger the Endpoint**:
+   - Call the batch endpoint to start a batch scoring job.
+2. **Submit a Batch Scoring Job**:
+   - The job is submitted to the Azure Machine Learning workspace.
+   - A compute cluster is used to process the input data.
+3. **Store Results**:
+   - The predictions are stored in a datastore connected to the Azure Machine Learning workspace.
+
+---
+
+### Creating a Batch Endpoint
+To create a batch endpoint, you use the **`BatchEndpoint`** class. Key points:
+- **Unique Name**: The batch endpoint name must be unique within the Azure region.
+- **Command**: Use the Azure Machine Learning Python SDK to define and create the endpoint.
+
+---
+
+### Summary
+Batch endpoints are ideal for generating predictions for large datasets asynchronously. They integrate well with existing data pipelines and allow you to process multiple inputs efficiently using compute clusters. By creating a batch endpoint, you can trigger batch scoring jobs and store the results for further analysis or integration with other systems.
+
+# create a batch endpoint
+endpoint = BatchEndpoint(
+    name="endpoint-example",
+    description="A batch endpoint",
+)
+
+ml_client.batch_endpoints.begin_create_or_update(endpoint)
+
+Deploy a model to a batch endpoint
+You can deploy multiple models to a batch endpoint. Whenever you call the batch endpoint, which triggers a batch scoring job, the default deployment will be used unless specified otherwise.
+
+
+Use compute clusters for batch deployments
+The ideal compute to use for batch deployments is the Azure Machine Learning compute cluster. If you want the batch scoring job to process the new data in parallel batches, you need to provision a compute cluster with more than one maximum instances.
+
+To create a compute cluster, you can use the AMLCompute class.
+
+from azure.ai.ml.entities import AmlCompute
+
+cpu_cluster = AmlCompute(
+    name="aml-cluster",
+    type="amlcompute",
+    size="STANDARD_DS11_V2",
+    min_instances=0,
+    max_instances=4,
+    idle_time_before_scale_down=120,
+    tier="Dedicated",
+)
+
+cpu_cluster = ml_client.compute.begin_create_or_update(cpu_cluster) 
+
+DEPLOY YOUR MLFLOW MODEL TO A BATCH ENDPOINT 
+
+An easy way to deploy a model to a batch endpoint is to use an MLflow model. Azure Machine Learning will automatically generate the scoring script and environment for MLflow models.
+
+To deploy an MLflow model, you need to have created an endpoint. Then you can deploy the model to the endpoint.
+
+Register an MLflow model
+To avoid needed a scoring script and environment, an MLflow model needs to be registered in the Azure Machine Learning workspace before you can deploy it to a batch endpoint.
+
+To register an MLflow model, you'll use the Model class, while specifying the model type to be MLFLOW_MODEL. To register the model with the Python SDK, you can use the following code:
+
+
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import AssetTypes
+
+model_name = 'mlflow-model'
+model = ml_client.models.create_or_update(
+    Model(name=model_name, path='./model', type=AssetTypes.MLFLOW_MODEL)
+)
+
+In this example, we're taking the model files from a local path. The files are all stored in a local folder called model. The folder must include the MLmodel file, which describes how the model can be loaded and used.
+
+
+Deploy an MLflow model to an endpoint
+To deploy an MLflow model to a batch endpoint, you'll use the BatchDeployment class.
+
+When you deploy a model, you'll need to specify how you want the batch scoring job to behave. The advantage of using a compute cluster to run the scoring script (which is automatically generated by Azure Machine Learning), is that you can run the scoring script on separate instances in parallel.
+
+When you configure the model deployment, you can specify:
+
+instance_count: Count of compute nodes to use for generating predictions.
+max_concurrency_per_instance: Maximum number of parallel scoring script runs per compute node.
+mini_batch_size: Number of files passed per scoring script run.
+output_action: What to do with the predictions: summary_only or append_row.
+output_file_name: File to which predictions will be appended, if you choose append_row for output_action.
+
+To deploy an MLflow model to a batch endpoint, you can use the following code:
+
+from azure.ai.ml.entities import BatchDeployment, BatchRetrySettings
+from azure.ai.ml.constants import BatchDeploymentOutputAction
+
+deployment = BatchDeployment(
+    name="forecast-mlflow",
+    description="A sales forecaster",
+    endpoint_name=endpoint.name,
+    model=model,
+    compute="aml-cluster",
+    instance_count=2,
+    max_concurrency_per_instance=2,
+    mini_batch_size=2,
+    output_action=BatchDeploymentOutputAction.APPEND_ROW,
+    output_file_name="predictions.csv",
+    retry_settings=BatchRetrySettings(max_retries=3, timeout=300),
+    logging_level="info",
+)
+ml_client.batch_deployments.begin_create_or_update(deployment)
+
+
+DEPLOY A CUSTOM MODEL TO A BATCH END POINT 
+If you want to deploy a model to a batch endpoint without using the MLflow model format, you need to create the scoring script and environment.
+
+To deploy a model, you must have already created an endpoint. Then you can deploy the model to the endpoint.
+
+Create the scoring script
+The scoring script is a file that reads the new data, loads the model, and performs the scoring.
+
+The scoring script must include two functions:
+
+init(): Called once at the beginning of the process, so use for any costly or common preparation like loading the model.
+run(): Called for each mini batch to perform the scoring.
+The run() method should return a pandas DataFrame or an array/list.
+
+A scoring script may look as follows:
+
+import os
+import mlflow
+import pandas as pd
+
+
+def init():
+    global model
+
+    # get the path to the registered model file and load it
+    model_path = os.path.join(os.environ["AZUREML_MODEL_DIR"], "model")
+    model = mlflow.pyfunc.load(model_path)
+
+
+def run(mini_batch):
+    print(f"run method start: {__file__}, run({len(mini_batch)} files)")
+    resultList = []
+
+    for file_path in mini_batch:
+        data = pd.read_csv(file_path)
+        pred = model.predict(data)
+
+        df = pd.DataFrame(pred, columns=["predictions"])
+        df["file"] = os.path.basename(file_path)
+        resultList.extend(df.values)
+
+    return resultList
+
+There are some things to note from the example script:
+
+AZUREML_MODEL_DIR is an environment variable that you can use to locate the files associated with the model.
+Use global variable to make any assets available that are needed to score the new data, like the loaded model.
+The size of the mini_batch is defined in the deployment configuration. If the files in the mini batch are too large to be processed, you need to split the files into smaller files.
+By default, the predictions will be written to one single file.
+
+Create an environment
+Your deployment requires an execution environment in which to run the scoring script. Any dependency your code requires should be included in the environment.
+
+You can create an environment with a Docker image with Conda dependencies, or with a Dockerfile.
+
+You'll also need to add the library azureml-core as it is required for batch deployments to work.
+
+To create an environment using a base Docker image, you can define the Conda dependencies in a conda.yaml file:
+YML 
+name: basic-env-cpu
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pandas
+  - pip
+  - pip:
+      - azureml-core
+      - mlflow
+
+
+Then, to create the environment, run the following code:
+from azure.ai.ml.entities import Environment
+
+env = Environment(
+    image="mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04",
+    conda_file="./src/conda-env.yml",
+    name="deployment-environment",
+    description="Environment created from a Docker image plus Conda environment.",
+)
+ml_client.environments.create_or_update(env)
+
+Configure and create the deployment
+Finally, you can configure and create the deployment with the BatchDeployment class.
+
+from azure.ai.ml.entities import BatchDeployment, BatchRetrySettings
+from azure.ai.ml.constants import BatchDeploymentOutputAction
+
+deployment = BatchDeployment(
+    name="forecast-mlflow",
+    description="A sales forecaster",
+    endpoint_name=endpoint.name,
+    model=model,
+    compute="aml-cluster",
+    code_path="./code",
+    scoring_script="score.py",
+    environment=env,
+    instance_count=2,
+    max_concurrency_per_instance=2,
+    mini_batch_size=2,
+    output_action=BatchDeploymentOutputAction.APPEND_ROW,
+    output_file_name="predictions.csv",
+    retry_settings=BatchRetrySettings(max_retries=3, timeout=300),
+    logging_level="info",
+)
+ml_client.batch_deployments.begin_create_or_update(deployment)
+
+
+INVOKE AND TROUBLESHOOT BATCH ENDPOINTS 
+
+When you invoke a batch endpoint, you trigger an Azure Machine Learning pipeline job. The job will expect an input parameter pointing to the data set you want to score.
+
+Trigger the batch scoring job
+To prepare data for batch predictions, you can register a folder as a data asset in the Azure Machine Learning workspace.
+
+You can then use the registered data asset as input when invoking the batch endpoint with the Python SDK:
+
+from azure.ai.ml import Input
+from azure.ai.ml.constants import AssetTypes
+
+input = Input(type=AssetTypes.URI_FOLDER, path="azureml:new-data:1")
+
+job = ml_client.batch_endpoints.invoke(
+    endpoint_name=endpoint.name, 
+    input=input)
+
+
+You can monitor the run of the pipeline job in the Azure Machine Learning studio. All jobs that are triggered by invoking the batch endpoint will show in the Jobs tab of the batch endpoint.
+
+
+The predictions will be stored in the default datastore.
+
+Troubleshoot a batch scoring job
+The batch scoring job runs as a pipeline job. If you want to troubleshoot the pipeline job, you can review its details and the outputs and logs of the pipeline job itself.
+
+
+If you want to troubleshoot the scoring script, you can select the child job and review its outputs and logs.
+
+Navigate to the Outputs + logs tab. The logs/user/ folder contains three files that will help you troubleshoot:
+
+job_error.txt: Summarize the errors in your script.
+job_progress_overview.txt: Provides high-level information about the number of mini-batches processed so far.
+job_result.txt: Shows errors in calling the init() and run() function in the scoring script.
